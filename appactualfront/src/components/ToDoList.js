@@ -1,8 +1,9 @@
 import React from 'react'
-import ToDoItem from "./ToDoItem"
 import {useDispatch, useSelector} from 'react-redux'
 import axios from 'axios'
 import {change_db, destroydb} from '../redux/database'
+import ToDoItem from "./ToDoItem"
+
 
 const API_LINK = 'http://localhost:5000//api/v1/items'
 
@@ -16,10 +17,8 @@ const ToDoList = () => {
     }
 
     const deleteEntry = async db => {
-        const lastEntryId = db[0].id
-        console.log(API_LINK+"/"+lastEntryId)
-
-        await axios.destroy(API_LINK+"/"+lastEntryId)
+        const lastEntry = db[0]
+        await axios.delete(API_LINK+"/"+lastEntry.id, lastEntry)
         getDatabase() // Delete, and re-render the database.
     }
 
@@ -27,11 +26,11 @@ const ToDoList = () => {
     const renderDatabase = currentDatabase.map( 
         jsonObject => {
             return (<div key = {jsonObject.id}>
-                {jsonObject.title} {jsonObject.body}
+                <ToDoItem item = {jsonObject}/>
             </div>)
         })
 
-    return ( <div>
+    return (<div>
             <button className="ui button" onClick = {() => getDatabase()}>
                 LOAD!
             </button>

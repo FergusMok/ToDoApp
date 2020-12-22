@@ -1,13 +1,13 @@
 import React from "react"
 
 
-const ToDoItem = ({id, title, body}) => {
+const ToDoItem = ({item}) => {
     return (
         <div>
-        <h3> Article ID : {id}</h3>
-        <h3>{title}</h3>
-        <p>{body}</p>
-        </div>
+         <h3> Article ID : {item.id}</h3>
+        <h3>{item.title}</h3>
+        <p>{item.body}</p>
+       </div>
     )
 }
 

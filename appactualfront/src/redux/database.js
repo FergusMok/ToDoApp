@@ -7,7 +7,6 @@ import {createStore, combineReducers} from 'redux'
 const API_LINK = 'http://localhost:5000//api/v1/items.json'
 
 const change_db = db => {
-    console.log(db)
     return { 
         type:"CHANGE",
         payload: db
@@ -27,17 +26,7 @@ const getdestroy = (state = [], action) => {
             console.log(action.payload)
             return action.payload
             break;
-/*         case "DESTROY":
-            console.log("Hello, from destroy")
-            const destroy = async () => await axios.destroy(`${API_LINK}+"/"+${action.payload}`).then( resp => console.log(resp) );
-            destroy()
-        // This should fall through to "GET", and update the state.
-        case "GET":
-            console.log("Hello, from get")
-            const get = async () => await axios.get(API_LINK).then( resp => resp.data)
-            return get()
-            break;
- */            
+
         default:
             console.log("Hello, from default") 
             return state
