@@ -1,7 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
+import {Sticky} from 'semantic-ui-react'
 import { navigate }  from "../redux/NavigationBar"
+
 
 const NavigationBar = () => {
     const dispatch = useDispatch();
@@ -13,7 +15,8 @@ const NavigationBar = () => {
     const incompletStr = "Incomplete" === activated ? ' active' : ""
 
     return (
-        <div className ="ui sticky secondary pointing menu">
+        <Sticky>
+        <div className ="ui secondary pointing menu" style={{backgroundColor: 'white'}}>
                 <div onClick = {() => dispatch(navigate("Home"))}>
                         <p className = {`item${homeStr}`}>
                         Home
@@ -36,6 +39,7 @@ const NavigationBar = () => {
 {/*                     </Link>
  */}                </div>
         </div>
+        </Sticky>
     );
 }
 
