@@ -1,7 +1,7 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import axios from 'axios'
-import {change_db, destroydb} from '../redux/database'
+import {change_db} from '../redux/database'
 import ToDoItem from "./ToDoItem"
 
 
@@ -22,7 +22,7 @@ const ToDoList = () => {
         getDatabase() // Delete, and re-render the database.
     }
 
-    const currentDatabase = useSelector( state => state.getdestroy )
+    const currentDatabase = useSelector( state => state.databaseState )
     const renderDatabase = currentDatabase.map( 
         jsonObject => {
             return (<div key = {jsonObject.id}>
@@ -38,7 +38,6 @@ const ToDoList = () => {
                  Delete the first entry
             </div>
             <div> {renderDatabase} </div>
-
             </div>)
 }
 
