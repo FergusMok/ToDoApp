@@ -25,7 +25,7 @@ module Api
 
             def update
                 @items = Item.find(params[:id])
-                if @items.update_attributes(item_params)
+                if @items.update_attributes(items_params)
                     render json: {status: 'Sucessful!', message:"Successfully updated my to-do item", data: @items}, status: :ok
                 else
                     render json: {status: 'Unsucessful!', message:"Was not able to update my to-do item", data: @items.errors}, status: :unprocessable_entity

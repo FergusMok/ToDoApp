@@ -8,6 +8,7 @@ const API_LINK = 'http://localhost:5000/api/v1/items'
 const NewItem = ({match}) => {
     const [titleState, setTitle] = useState("")
     const [bodyState, setBody] = useState("")
+    const [newItemState, setNewItem] = useState(true)
 
     const onFormSubmit = async (event) => {
         event.preventDefault();
@@ -20,17 +21,28 @@ const NewItem = ({match}) => {
         })
     }
 
-    useEffect( () => {
+    const onFormEdit = async (event) => { // This is for the put request
+        event.preventDefault();
+        await axios.put(`${API_LINK}/${match.params.id}`, {
+            title: titleState,
+            body: bodyState
+        }).then(resp => {
+            console.log(resp)
+        }).catch(resp => console.log(resp))
+    }
+
+    useEffect( () => { // This will fill up the form when editing 
         const refreshArticle = async () => {
-            if (match) {
+            if (match.path !== "/create") {
                 const itemDetails = await axios.get(`${API_LINK}/${match.params.id}`)
+                setNewItem(false)
                 setTitle(itemDetails.data.data.title)
                 setBody(itemDetails.data.data.body)
             }
         }
-        refreshArticle()},[match])
+        refreshArticle()}, [match])
     
-    return <form onSubmit = {onFormSubmit}>
+    return <form onSubmit = {newItemState? onFormSubmit : onFormEdit}>
             <div className="ui form" >
                 <div className="Title">
                     <label>Title</label>
@@ -40,7 +52,7 @@ const NewItem = ({match}) => {
                     <label>Body</label>
                     <textarea value = {bodyState} onInput = {(e) => setBody(e.target.value)} placeholder = "Body"></textarea>
                 </div>
-                <Button type="submit" content='Submit' primary />
+                <Button type="submit" content={ newItemState? 'Submit': "Edit"} primary />
             </div>
         </form>
 }
