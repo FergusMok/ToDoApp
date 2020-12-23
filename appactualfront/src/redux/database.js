@@ -1,8 +1,5 @@
 // Actions I will have to do that are easy
 // GET, DESTROY ..
-import axios from 'axios'
-
-const API_LINK = 'http://localhost:5000//api/v1/items.json'
 
 const change_db = db => {
     return { 

@@ -5,7 +5,7 @@ import {change_db} from '../redux/database'
 import ToDoItem from "./ToDoItem"
 
 
-const API_LINK = 'http://localhost:5000//api/v1/items'
+const API_LINK = 'http://localhost:5000/api/v1/items'
 
 const ToDoList = () => {
 
