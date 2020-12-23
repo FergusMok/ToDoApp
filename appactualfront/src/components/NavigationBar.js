@@ -11,17 +11,28 @@ const NavigationBar = () => {
     // Conditional Rendering...
     const activated = useSelector(state => state.navigationState)
     const homeStr = "Home" === activated ? ' active' : ""
+    const createStr = "Create" === activated ? ' active' : ""
     const completeStr = "Completed" === activated ? ' active' : ""
     const incompletStr = "Incomplete" === activated ? ' active' : ""
 
     return (
         <Sticky>
         <div className ="ui secondary pointing menu" style={{backgroundColor: 'white'}}>
+                <Link to='/'>
                 <div onClick = {() => dispatch(navigate("Home"))}>
                         <p className = {`item${homeStr}`}>
                         Home
                         </p>
                 </div>
+                </Link>
+
+                <Link to='/create'>
+                <div onClick = {() => dispatch(navigate("Create"))}>
+                        <p className = {`item${createStr}`}>
+                        Create
+                        </p>
+                </div>
+                </Link>
 
                 <div onClick = {() => dispatch(navigate("Completed"))}>
 {/*                     <Link to ='/' >

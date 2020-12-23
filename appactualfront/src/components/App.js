@@ -1,15 +1,22 @@
 import React, {useEffect} from 'react'
-import ToDoList from "./ToDoList"
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
 import NavigationBar from "./NavigationBar"
 import NewItem from "./NewItem"
+import HomePage from "./HomePage"
 
 const App = () => {
 
-    return (<div>
+    return (<>
+                <Router>
                 <NavigationBar/>
-                <div className = "container"> <NewItem/> </div>
-                <ToDoList/>
-            </div>
+                    <Switch>
+                        <Route path = "/" exact component = {HomePage} />
+                        <Route path = "/create" exact component = {NewItem}/>
+                        <Route path = "/create/:id" exact component = {NewItem} />
+                    </Switch>
+                </Router>
+            </>
         );
     }
 

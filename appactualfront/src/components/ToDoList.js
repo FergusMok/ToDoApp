@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import axios from 'axios'
 import {change_db} from '../redux/database'
 import ToDoItem from "./ToDoItem"
+import { Link } from 'react-router-dom';
 
 
 const API_LINK = 'http://localhost:5000/api/v1/items'
@@ -25,10 +26,13 @@ const ToDoList = () => {
     const currentDatabase = useSelector( state => state.databaseState )
     const renderDatabase = currentDatabase.map( 
         jsonObject => {
-            return (<div key = {jsonObject.id}>
+            return (
+            <div key = {jsonObject.id}>
+            <Link to = {`/create/${jsonObject.id}`}>
                 <ToDoItem item = {jsonObject}/>
-            </div>)
-        })
+            </Link>
+            </div>
+        )})
 
     return (<div>
             <button className="ui button" onClick = {() => getDatabase()}>

@@ -1,28 +1,35 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Button } from 'semantic-ui-react'
 import axios from 'axios'
 
 const API_LINK = 'http://localhost:5000/api/v1/items'
 
 
-const NewItem = () => {
+const NewItem = ({match}) => {
     const [titleState, setTitle] = useState("")
     const [bodyState, setBody] = useState("")
 
     const onFormSubmit = async (event) => {
         event.preventDefault();
         console.log("Hello from submit")
-
-
         await axios.post(API_LINK, {
             title: titleState,
             body: bodyState
         }).then(resp => {
             console.log(resp)
         })
-
     }
 
+    useEffect( () => {
+        const refreshArticle = async () => {
+            if (match) {
+                const itemDetails = await axios.get(`${API_LINK}/${match.params.id}`)
+                setTitle(itemDetails.data.data.title)
+                setBody(itemDetails.data.data.body)
+            }
+        }
+        refreshArticle()},[match])
+    
     return <form onSubmit = {onFormSubmit}>
             <div className="ui form" >
                 <div className="Title">
