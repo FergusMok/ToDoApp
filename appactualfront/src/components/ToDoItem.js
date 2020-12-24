@@ -2,7 +2,7 @@ import React from "react"
 import { Checkbox, Button, Card, Image } from 'semantic-ui-react'
 
 const ToDoItem = ({item}) => {
-    return (<Card.Group>
+/*     return (<Card.Group>
                 <Card>
                 <Card.Content>
                     <Card.Header>{item.title}</Card.Header>
@@ -14,7 +14,7 @@ const ToDoItem = ({item}) => {
                 </Card.Content>
                 <Card.Content extra>
                     <div className='ui two buttons'>
-                    <Button basic color='green'>
+                    <Button basic color='green' >
                         Mark as Complete
                     </Button>
                     <Button basic color='red'>
@@ -25,4 +25,16 @@ const ToDoItem = ({item}) => {
                 </Card>
             </Card.Group>)
     }
+ */
+    console.log(item)
+    const extra = <div>These will be tags later on </div>
+    return (
+    <Card
+      header= {item.title}
+      meta= {`Last updated: ${item.updated_at.slice(0,10)}`}
+      description= {item.body}
+      extra={extra}
+    />)
+    }
+    
 export default ToDoItem
