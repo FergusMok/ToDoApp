@@ -4,6 +4,8 @@ import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import NavigationBar from "./NavigationBar"
 import NewItem from "./NewItem"
 import HomePage from "./HomePage"
+import Completed from "./Completed"
+
 
 const App = () => {
 
@@ -12,6 +14,7 @@ const App = () => {
                 <NavigationBar/>
                     <Switch>
                         <Route path = "/" exact component = {HomePage} />
+                        <Route path = "/completed" exact component = {HomePage}/>
                         <Route path = "/create" exact component = {NewItem}/>
                         <Route path = "/create/:id" exact component = {NewItem} />
                     </Switch>

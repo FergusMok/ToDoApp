@@ -1,13 +1,11 @@
 import React from 'react'
 import ToDoList from "./ToDoList"
 
-const HomePage = ({match}) => {
 
-    return ( <>
+const Completed = ({match}) => {
+    return <>
         <ToDoList match = {match} />
         </>
-    )
-
 }
 
-export default HomePage
+export default Completed

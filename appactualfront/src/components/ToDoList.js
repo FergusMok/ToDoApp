@@ -8,13 +8,18 @@ import { Link } from 'react-router-dom';
 
 const API_LINK = 'http://localhost:5000/api/v1/items'
 
-const ToDoList = () => {
+const ToDoList = ({match}) => {
 
     const dispatch = useDispatch();
 
+    console.log("Hello this is match",match)
     const getDatabase = async () => {
         const database = await axios.get(API_LINK + ".json")
-        dispatch(change_db(database.data.data))
+        if (match.path === "/") {
+            dispatch(change_db(database.data.data.filter(item => item.completed == false)))
+        } else {
+            dispatch(change_db(database.data.data.filter(item => item.completed == true)))
+        }
     }
 
     const deleteEntry = async db => {

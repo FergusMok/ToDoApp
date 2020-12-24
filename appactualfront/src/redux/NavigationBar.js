@@ -5,7 +5,7 @@ const navigate = dest => {
     }
 }
 
-const navigateReducer = (state = "Home", action) => {
+const navigateReducer = (state = "Incomplete", action) => {
     switch(action.type) {
         case "CHANGENAVIGATION":
             return action.payload
