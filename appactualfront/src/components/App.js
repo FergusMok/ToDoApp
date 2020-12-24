@@ -4,7 +4,6 @@ import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import NavigationBar from "./NavigationBar"
 import NewItem from "./NewItem"
 import HomePage from "./HomePage"
-import Completed from "./Completed"
 
 
 const App = () => {
