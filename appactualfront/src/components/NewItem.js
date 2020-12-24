@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { Link } from 'react-router-dom';
 import { Button } from 'semantic-ui-react'
 import axios from 'axios'
 
@@ -22,6 +23,7 @@ const NewItem = ({match}) => {
     }
 
     const onFormEdit = async (event) => { // Put request to edit title and body
+        console.log("Hello, from edit")
         event.preventDefault();
         await axios.put(`${API_LINK}/${match.params.id}`, {
             title: titleState,
@@ -62,6 +64,7 @@ const NewItem = ({match}) => {
     const submitEditButton = <Button type="submit" content={ newItemState? 'Submit': "Edit"} />
     const deleteButton = newItemState? <></> : <Button onClick = {() => deleteEntry()} content={"Delete"}/>
     const markAsComplete = newItemState? <></> : <Button onClick = {() => markComplete()} content={"Complete"}/>
+    const linkAddress = newItemState ? "/" : "/completed" 
 
     return <form onSubmit = {newItemState? onFormSubmit : onFormEdit}>
             <div className="ui form" >
