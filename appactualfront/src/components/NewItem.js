@@ -38,15 +38,18 @@ const NewItem = ({match}) => {
                 setNewItem(false)
                 setTitle(itemDetails.data.data.title)
                 setBody(itemDetails.data.data.body)
+            } else {
+                setNewItem(true)
+                setTitle("")
+                setBody("")
             }
         }
-        refreshArticle()}, [match])
+        refreshArticle()}, [match.path])
 
     const deleteEntry = async () => { // Delete button
             await axios.delete(`${API_LINK}/${match.params.id}`)
         }
     
-    console.log(match)
 
     const deleteButton = newItemState? <div> </div> : <Button onClick = {() => deleteEntry()} content={"Delete"} secondary />
     // Conditional rendering of the delete button
@@ -62,8 +65,6 @@ const NewItem = ({match}) => {
                     <textarea value = {bodyState} onInput = {(e) => setBody(e.target.value)} placeholder = "Body"></textarea>
                 </div>
                     <Button type="submit" content={ newItemState? 'Submit': "Edit"} primary />
-                </div>
-                <div>
                     {deleteButton}
                 </div>
         </form>
