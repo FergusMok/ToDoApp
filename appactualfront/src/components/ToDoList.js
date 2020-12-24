@@ -26,11 +26,6 @@ const ToDoList = ({match}) => {
         }
     }
 
-    const deleteEntry = async db => {
-        const lastEntry = db[0]
-        await axios.delete(API_LINK+"/"+lastEntry.id, lastEntry)
-        getDatabase() // Delete, and re-render the database.
-    }
 
     const currentDatabase = useSelector( state => state.databaseState )
     const renderDatabase = currentDatabase.map( 

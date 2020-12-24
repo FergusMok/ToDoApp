@@ -21,7 +21,7 @@ const NewItem = ({match}) => {
         })
     }
 
-    const onFormEdit = async (event) => { // Put request.
+    const onFormEdit = async (event) => { // Put request to edit title and body
         event.preventDefault();
         await axios.put(`${API_LINK}/${match.params.id}`, {
             title: titleState,
@@ -50,9 +50,18 @@ const NewItem = ({match}) => {
             await axios.delete(`${API_LINK}/${match.params.id}`)
         }
     
+    const markComplete = async () => { // Put request to mark complete
+            await axios.put(`${API_LINK}/${match.params.id}`, {
+                completed: true,
+            }).then(resp => {
+                console.log(resp)
+            }).catch(resp => console.log(resp))
+    }
 
-    const deleteButton = newItemState? <div> </div> : <Button onClick = {() => deleteEntry()} content={"Delete"} secondary />
-    // Conditional rendering of the delete button
+    // Conditional rendering of the buttons
+    const submitEditButton = <Button type="submit" content={ newItemState? 'Submit': "Edit"} />
+    const deleteButton = newItemState? <></> : <Button onClick = {() => deleteEntry()} content={"Delete"}/>
+    const markAsComplete = newItemState? <></> : <Button onClick = {() => markComplete()} content={"Complete"}/>
 
     return <form onSubmit = {newItemState? onFormSubmit : onFormEdit}>
             <div className="ui form" >
@@ -64,9 +73,12 @@ const NewItem = ({match}) => {
                     <label>Body</label>
                     <textarea value = {bodyState} onInput = {(e) => setBody(e.target.value)} placeholder = "Body"></textarea>
                 </div>
-                    <Button type="submit" content={ newItemState? 'Submit': "Edit"} primary />
+                <Button.Group>
+                    {submitEditButton}
                     {deleteButton}
-                </div>
+                    {markAsComplete}
+                </Button.Group>
+            </div>
         </form>
 }
 
