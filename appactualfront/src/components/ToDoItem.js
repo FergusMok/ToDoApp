@@ -1,17 +1,28 @@
 import React from "react"
-import { Checkbox } from 'semantic-ui-react'
-
+import { Checkbox, Button, Card, Image } from 'semantic-ui-react'
 
 const ToDoItem = ({item}) => {
-    return (
-        <div>
-        <h3> Article ID : {item.id}</h3>
-        <p> {`${item.completed}`}</p> 
-        <h3>{item.title}</h3>
-        <Checkbox label='Completed?' />
-        <p>{item.body}</p>
-       </div>
-    )
-}
-
+    return (<Card.Group>
+                <Card>
+                <Card.Content>
+                    <Card.Header>{item.title}</Card.Header>
+                    <Card.Meta>Inserts tags here later</Card.Meta>
+                    <Card.Meta>Inserts date here</Card.Meta>
+                    <Card.Description>
+                    {item.body}
+                    </Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                    <div className='ui two buttons'>
+                    <Button basic color='green'>
+                        Mark as Complete
+                    </Button>
+                    <Button basic color='red'>
+                        Delete
+                    </Button>
+                    </div>
+                </Card.Content>
+                </Card>
+            </Card.Group>)
+    }
 export default ToDoItem

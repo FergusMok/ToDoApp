@@ -47,9 +47,10 @@ const ToDoList = ({match}) => {
 {/*             <button className="ui button" onClick = {() => getDatabase()}>
                 LOAD!
             </button>
- */}            <div className="ui button" tabIndex="0" onClick = {() => deleteEntry(currentDatabase)}>
+           <div className="ui button" tabIndex="0" onClick = {() => deleteEntry(currentDatabase)}>
                  Delete the first entry
             </div>
+*/}  
             <div> {renderDatabase} </div>
             </div>)
 }

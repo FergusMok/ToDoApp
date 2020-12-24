@@ -21,7 +21,7 @@ const NewItem = ({match}) => {
         })
     }
 
-    const onFormEdit = async (event) => { // This is for the put request
+    const onFormEdit = async (event) => { // Put request.
         event.preventDefault();
         await axios.put(`${API_LINK}/${match.params.id}`, {
             title: titleState,
@@ -31,7 +31,7 @@ const NewItem = ({match}) => {
         }).catch(resp => console.log(resp))
     }
 
-    useEffect( () => { // This will fill up the form when editing 
+    useEffect( () => { // Fills up the form for put request.
         const refreshArticle = async () => {
             if (match.path !== "/create") {
                 const itemDetails = await axios.get(`${API_LINK}/${match.params.id}`)
@@ -41,7 +41,16 @@ const NewItem = ({match}) => {
             }
         }
         refreshArticle()}, [match])
+
+    const deleteEntry = async () => { // Delete button
+            await axios.delete(`${API_LINK}/${match.params.id}`)
+        }
     
+    console.log(match)
+
+    const deleteButton = newItemState? <div> </div> : <Button onClick = {() => deleteEntry()} content={"Delete"} secondary />
+    // Conditional rendering of the delete button
+
     return <form onSubmit = {newItemState? onFormSubmit : onFormEdit}>
             <div className="ui form" >
                 <div className="Title">
@@ -52,8 +61,11 @@ const NewItem = ({match}) => {
                     <label>Body</label>
                     <textarea value = {bodyState} onInput = {(e) => setBody(e.target.value)} placeholder = "Body"></textarea>
                 </div>
-                <Button type="submit" content={ newItemState? 'Submit': "Edit"} primary />
-            </div>
+                    <Button type="submit" content={ newItemState? 'Submit': "Edit"} primary />
+                </div>
+                <div>
+                    {deleteButton}
+                </div>
         </form>
 }
 
