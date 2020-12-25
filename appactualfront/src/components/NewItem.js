@@ -9,13 +9,14 @@ const API_LINK = 'http://localhost:5000/api/v1/items'
 const NewItem = ({match}) => {
     const [titleState, setTitle] = useState("")
     const [bodyState, setBody] = useState("")
-    const [newItemState, setNewItem] = useState(true)
+    const [tagState, setTags] = useState("")
+    const [newItemState, setNewItem] = useState(true) // Used to determine if new page or not.
     const history = useHistory();
 
 
     console.log("Hello from match in newItem", match)
 
-    const redirect = () => {
+    const redirect = () => { // Redirect once CRUD operaton is done. 
         if (match.path == "/completed/:id") { // Complete will route back to complete
             history.push("/completed")
         } else { // Create and Incomplete should route back to incomplete 
@@ -23,6 +24,7 @@ const NewItem = ({match}) => {
         }
     }
 
+    // Completed defaulted to be false 
     const onFormSubmit = async (event) => {
         event.preventDefault();
         console.log("Hello from submit in newItem")
@@ -35,7 +37,7 @@ const NewItem = ({match}) => {
         redirect()
     }
 
-    const onFormEdit = async (event) => { // Put request to edit title and body
+    const onFormEdit = async (event) => { // Put request, should not change completed.
         console.log("Hello, from edit in newItem")
         event.preventDefault();
         await axios.put(`${API_LINK}/${match.params.id}`, {
@@ -63,7 +65,7 @@ const NewItem = ({match}) => {
         }
         refreshArticle()}, [match.path])
 
-    const deleteEntry = async () => { // Delete button
+    const deleteEntry = async () => { // Destroy
             await axios.delete(`${API_LINK}/${match.params.id}`)
             redirect()
         }

@@ -12,7 +12,6 @@ const ToDoItem = ({item}) => {
         <Card.Description style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}}>
           {item.body}
         </Card.Description>
-
           <Card.Content extra>
               {extra}     
          </Card.Content>
