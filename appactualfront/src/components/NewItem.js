@@ -2,14 +2,15 @@ import React, {useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom';
 import { Button, Dropdown } from 'semantic-ui-react'
 import axios from 'axios'
-
-const API_LINK = 'http://localhost:5000/api/v1/items'
+import API_LINK from "../api/API_LINK"
 
 
 const NewItem = ({match}) => {
-    const [titleState, setTitle] = useState("")
+
+    // Title and body can be converted 1 state, but flattened so as to prevent double re-rendering.     
+    const [titleState, setTitle] = useState("")  
     const [bodyState, setBody] = useState("")
-    const [newItemState, setNewItem] = useState(true) // Used to determine if new page or not.
+    
     // The tagInputBar requires 2 states to work. 
     const [tagState, setTags] = useState([]);
     const [currentTag, setCurrentTag] = useState([])
@@ -29,9 +30,6 @@ const NewItem = ({match}) => {
     // Completed defaulted to be false 
     const onFormSubmit = async (event) => {
         event.preventDefault();
-        console.log("Hello from submit in newItem")
-        console.log(currentTag)
-        console.log(currentTag.toString())
         await axios.post(API_LINK, {
             title: titleState,
             body: bodyState,
@@ -43,10 +41,7 @@ const NewItem = ({match}) => {
     }
 
     const onFormEdit = async (event) => { // Put request, should not change completed.
-        console.log("Hello, from edit in newItem")
         event.preventDefault();
-        console.log(currentTag)
-        console.log(currentTag.toString())
         await axios.put(`${API_LINK}/${match.params.id}`, {
             title: titleState,
             body: bodyState,
@@ -57,24 +52,22 @@ const NewItem = ({match}) => {
         redirect()
     }
 
+    const isNewItem = () => (match.path === "/create")
+
     useEffect( () => { // Fills up the form for put request.
         console.log("render")
         const refreshArticle = async () => {
-            if (match.path !== "/create") {
+            if (!isNewItem()) {
                 const itemDetails = await axios.get(`${API_LINK}/${match.params.id}`)
-                setNewItem(false)
                 setTitle(itemDetails.data.data.title)
                 setBody(itemDetails.data.data.body)
                 // Parse the tags, and set them to the tagState
-                console.log("ItemDetails",itemDetails)
                 setTags( itemDetails.data.data.tag_list.map( tag => { 
                     const newObj = {key: tag, text: tag, value: tag} 
                     return newObj
                 }))
                 setCurrentTag( itemDetails.data.data.tag_list )
-
             } else { // Resets state, if user changes from edit to create via navBar.
-                setNewItem(true)
                 setTitle("")
                 setBody("")
                 setTags("")
@@ -99,11 +92,11 @@ const NewItem = ({match}) => {
 
 
     // Conditional rendering of the buttons
-    const submitEditButton = <Button type="submit" content={ newItemState? 'Submit': "Edit"} />
-    const deleteButton = newItemState? <></> : <Button onClick = {() => deleteEntry()} content={"Delete"}/>
-    const markAsComplete = newItemState? <></> : <Button onClick = {() => markComplete()} content={"Complete"}/>
+    const submitEditButton = <Button type="submit" content={ isNewItem()? 'Submit': "Edit"} />
+    const deleteButton = isNewItem()? <></> : <Button onClick = {() => deleteEntry()} content={"Delete"}/>
+    const markAsComplete = isNewItem()? <></> : <Button onClick = {() => markComplete()} content={"Complete"}/>
 
-    return <form onSubmit = {newItemState? onFormSubmit : onFormEdit}>
+    return <form onSubmit = { (event) => isNewItem()? onFormSubmit(event) : onFormEdit(event) }>
             <div className="ui form" >
                 <div className="Title">
                     <label>Title</label>

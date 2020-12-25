@@ -11,6 +11,7 @@ const App = () => {
     return (<>
                 <Router>
                 <NavigationBar/>
+                <br/>
                     <Switch>
                         <Route path = "/incomplete" exact component = {HomePage} />
                         <Route path = "/incomplete/:id" exact component = {NewItem} />
