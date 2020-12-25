@@ -5,9 +5,8 @@ import {Sticky} from 'semantic-ui-react'
 import { navigate }  from "../redux/NavigationBar"
 
 
-const NavigationBar = () => {
+const NavigationBar = ({match}) => {
     const dispatch = useDispatch();
-
     // Conditional Rendering...
     const activated = useSelector(state => state.navigationState)
     const incompleteStr = "Incomplete" === activated ? ' active' : ""
@@ -17,7 +16,7 @@ const NavigationBar = () => {
     return (
         <Sticky>
         <div className ="ui secondary pointing menu" style={{backgroundColor: 'white'}}>
-                <Link to='/'>
+                <Link to='/incomplete'>
                 <div onClick = {() => dispatch(navigate("Incomplete"))}>
                    <p className ={`item${incompleteStr}`}>
                         Not Completed
@@ -34,7 +33,7 @@ const NavigationBar = () => {
                 </Link>
 
                 <div onClick = {() => dispatch(navigate("Completed"))}>
-                     <Link to ='/Completed' >
+                     <Link to ='/completed' >
                      <p className = {`item${completeStr}`}>
                         Completed
                     </p>

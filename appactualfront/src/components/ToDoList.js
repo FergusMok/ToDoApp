@@ -16,10 +16,9 @@ const ToDoList = ({match}) => {
     const activated = useSelector(state => state.navigationState)
 
     useEffect( () => getDatabase(),[activated])
-
     const getDatabase = async () => {
         const database = await axios.get(API_LINK + ".json")
-        if (match.path === "/") {
+        if (match.path === "/incomplete") { 
             dispatch(change_db(database.data.data.filter(item => item.completed == false)))
         } else {
             dispatch(change_db(database.data.data.filter(item => item.completed == true)))
@@ -28,25 +27,21 @@ const ToDoList = ({match}) => {
 
 
     const currentDatabase = useSelector( state => state.databaseState )
+
     const renderDatabase = currentDatabase.map( 
         jsonObject => {
+            // Check if complete or incomplete. This will render the correct path.
+            const pathName = jsonObject.completed ? `/completed/${jsonObject.id}` : `/incomplete/${jsonObject.id}`
             return (
             <div key = {jsonObject.id}>
-            <Link to = {`/create/${jsonObject.id}`}>
+            <Link to = {pathName}>
                 <ToDoItem item = {jsonObject}/>
             </Link>
             </div>
         )})
 
     return (<div>
-{/*             <button className="ui button" onClick = {() => getDatabase()}>
-                LOAD!
-            </button>
-           <div className="ui button" tabIndex="0" onClick = {() => deleteEntry(currentDatabase)}>
-                 Delete the first entry
-            </div>
-*/}  
-            <div> {renderDatabase} </div>
+            {renderDatabase} 
             </div>)
 }
 
