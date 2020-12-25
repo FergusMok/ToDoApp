@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useHistory } from 'react-router-dom';
-import { Button } from 'semantic-ui-react'
+import { Button, Dropdown } from 'semantic-ui-react'
 import axios from 'axios'
+import TagInputBar from './TagInputBar.js'
 
 const API_LINK = 'http://localhost:5000/api/v1/items'
 
@@ -9,8 +10,10 @@ const API_LINK = 'http://localhost:5000/api/v1/items'
 const NewItem = ({match}) => {
     const [titleState, setTitle] = useState("")
     const [bodyState, setBody] = useState("")
-    const [tagState, setTags] = useState("")
     const [newItemState, setNewItem] = useState(true) // Used to determine if new page or not.
+    // The tagInputBar requires 2 states to work. 
+    const [tagState, setTags] = useState([]);
+    const [currentTag, setCurrentTag] = useState([])
     const history = useHistory();
 
 
@@ -28,9 +31,12 @@ const NewItem = ({match}) => {
     const onFormSubmit = async (event) => {
         event.preventDefault();
         console.log("Hello from submit in newItem")
+        console.log(currentTag)
+        console.log(currentTag.toString())
         await axios.post(API_LINK, {
             title: titleState,
-            body: bodyState
+            body: bodyState,
+            tag_list: currentTag.toString()
         }).then(resp => {
             console.log(resp)
         })
@@ -40,9 +46,12 @@ const NewItem = ({match}) => {
     const onFormEdit = async (event) => { // Put request, should not change completed.
         console.log("Hello, from edit in newItem")
         event.preventDefault();
+        console.log(currentTag)
+        console.log(currentTag.toString())
         await axios.put(`${API_LINK}/${match.params.id}`, {
             title: titleState,
-            body: bodyState
+            body: bodyState,
+            tag_list: currentTag.toString()
         }).then(resp => {
             console.log(resp)
         }).catch(resp => console.log(resp))
@@ -57,10 +66,19 @@ const NewItem = ({match}) => {
                 setNewItem(false)
                 setTitle(itemDetails.data.data.title)
                 setBody(itemDetails.data.data.body)
-            } else { // For creation of new form. 
+                // Parse the tags, and set them to the tagState
+                console.log("ItemDetails",itemDetails)
+                setTags( itemDetails.data.data.tag_list.map( tag => { 
+                    const newObj = {key: tag, text: tag, value: tag} 
+                    return newObj
+                }))
+                setCurrentTag( itemDetails.data.data.tag_list )
+
+            } else { // Resets state, if user changes from edit to create via navBar.
                 setNewItem(true)
                 setTitle("")
                 setBody("")
+                setTags("")
             }
         }
         refreshArticle()}, [match.path])
@@ -79,6 +97,8 @@ const NewItem = ({match}) => {
             redirect()
     }
 
+
+
     // Conditional rendering of the buttons
     const submitEditButton = <Button type="submit" content={ newItemState? 'Submit': "Edit"} />
     const deleteButton = newItemState? <></> : <Button onClick = {() => deleteEntry()} content={"Delete"}/>
@@ -94,6 +114,18 @@ const NewItem = ({match}) => {
                     <label>Body</label>
                     <textarea value = {bodyState} onInput = {(e) => setBody(e.target.value)} placeholder = "Body"></textarea>
                 </div>
+                <Dropdown
+                    options={tagState}
+                    placeholder="Tags!"
+                    multiple
+                    search
+                    selection
+                    fluid
+                    allowAdditions
+                    value={currentTag}
+                    onAddItem={(event, {value}) => { setTags(prevState => [{text: value, value}, ...prevState])}}
+                    onChange={(event, {value}) => { setCurrentTag(value)}}
+                />
                 <Button.Group>
                     {submitEditButton}
                     {deleteButton}
