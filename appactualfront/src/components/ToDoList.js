@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import {change_db} from '../redux/database'
 import ToDoItem from "./ToDoItem"
 import API_LINK from "../api/API_LINK"
+import './ToDoList.css'
 const ToDoList = ({match}) => {
 
     const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const ToDoList = ({match}) => {
             // Check if complete or incomplete. This will render the correct path.
             return (
             <XBlock>
-                <div key = {jsonObject.id}>
+                <div key = {jsonObject.id} className = "XMasonryCard">
                     <Link to = {pathName}>
                         <ToDoItem item = {jsonObject}/>
                     </Link>
