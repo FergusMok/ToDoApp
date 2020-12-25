@@ -15,7 +15,9 @@ const ToDoList = ({match}) => {
     console.log("Hello this is match",match)
     const activated = useSelector(state => state.navigationState)
 
-    useEffect( () => getDatabase(),[activated])
+    useEffect( () => { getDatabase()
+        console.log("Hello, useEffect")} ,[activated])
+    
     const getDatabase = async () => {
         const database = await axios.get(API_LINK + ".json")
         if (match.path === "/incomplete") { 

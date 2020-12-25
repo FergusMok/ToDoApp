@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, Dropdown } from 'semantic-ui-react'
 import axios from 'axios'
-import TagInputBar from './TagInputBar.js'
 
 const API_LINK = 'http://localhost:5000/api/v1/items'
 
@@ -20,7 +19,7 @@ const NewItem = ({match}) => {
     console.log("Hello from match in newItem", match)
 
     const redirect = () => { // Redirect once CRUD operaton is done. 
-        if (match.path == "/completed/:id") { // Complete will route back to complete
+        if (match.path === "/completed/:id") { // Complete will route back to complete
             history.push("/completed")
         } else { // Create and Incomplete should route back to incomplete 
             history.push("/incomplete")

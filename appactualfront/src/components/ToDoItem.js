@@ -1,21 +1,16 @@
 import React from "react"
-import { Checkbox, Button, Card, Image } from 'semantic-ui-react'
+import { Checkbox, Button, Card, Label } from 'semantic-ui-react'
 
 const ToDoItem = ({item}) => {
-    const extra = <a>These will be tags later on </a>
+
+    const extra = item.tag_list.map( tag => <Label>{`${tag}`}</Label>)
     const dateObj = new Date(item.updated_at)
     return (
       <Card>
-      <Card.Content>
-        <Card.Header>{item.title}</Card.Header>
-        <Card.Meta>{`Last updated: ${dateObj.toDateString()} `}</Card.Meta>
-        <Card.Description style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}}>
-          {item.body}
-        </Card.Description>
-          <Card.Content extra>
-              {extra}     
-         </Card.Content>
-        </Card.Content>
+      <Card.Content header = {item.title}/>
+      <Card.Content meta = {`Last updated: ${dateObj.toDateString()} `}/>
+      <Card.Content description ={item.body} style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}} />
+      <Card.Content extra>{extra}</Card.Content>
     </Card>)
 
 
