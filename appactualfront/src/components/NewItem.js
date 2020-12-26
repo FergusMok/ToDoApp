@@ -3,14 +3,15 @@ import { useHistory } from 'react-router-dom';
 import { Button, Dropdown } from 'semantic-ui-react'
 import axios from 'axios'
 import API_LINK from "../api/API_LINK"
-
+import "./NewItem.css"
+import ValidationModal from './ValidationModal'
 
 const NewItem = ({match}) => {
 
     // Title and body can be converted 1 state, but flattened so as to prevent double re-rendering.     
     const [titleState, setTitle] = useState("")  
     const [bodyState, setBody] = useState("")
-    
+
     // The tagInputBar requires 2 states to work. 
     const [tagState, setTags] = useState([]);
     const [currentTag, setCurrentTag] = useState([])
@@ -36,7 +37,7 @@ const NewItem = ({match}) => {
             tag_list: currentTag.toString()
         }).then(resp => {
             console.log(resp)
-        })
+        }).catch(resp => console.log(resp))
         redirect()
     }
 
@@ -46,9 +47,16 @@ const NewItem = ({match}) => {
             title: titleState,
             body: bodyState,
             tag_list: currentTag.toString()
-        }).then(resp => {
-            console.log(resp)
-        }).catch(resp => console.log(resp))
+        }).catch(error => {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx. This is for troubleshooting only.
+                // The input bar should handle the validation. 
+                console.log("Data",error.response.data);
+            } else {
+                console.log("Error",error)
+            }
+        })
         redirect()
     }
 
@@ -92,21 +100,37 @@ const NewItem = ({match}) => {
 
 
     // Conditional rendering of the buttons
-    const submitEditButton = <Button type="submit" content={ isNewItem()? 'Submit': "Edit"} />
-    const deleteButton = isNewItem()? <></> : <Button onClick = {() => deleteEntry()} content={"Delete"}/>
-    const markAsComplete = isNewItem()? <></> : <Button onClick = {() => markComplete()} content={"Complete"}/>
+    const submitEditButton = <button type="submit">{isNewItem()? 'Submit': "Edit"}</button>
+    const deleteButton = isNewItem()? <></> : <button onClick = {() => deleteEntry()}> {"Delete"} </button>
+    const markAsComplete = isNewItem()? <></> : <button onClick = {() => markComplete()}>{"Complete"}</button>
+    return (<div className = "NewItemBody">
+                <form onSubmit = { (event) => isNewItem()? onFormSubmit(event) : onFormEdit(event) }>
+        
+            <h1> {isNewItem()? 'Create new item!': "Edit item!"} </h1>
 
-    return <form onSubmit = { (event) => isNewItem()? onFormSubmit(event) : onFormEdit(event) }>
-            <div className="ui form" >
-                <div className="Title">
-                    <label>Title</label>
-                    <input type="text" value = {titleState} onInput = {(e) => setTitle(e.target.value)} name="first-name" placeholder="Title"/>
-                </div>
-                <div className="field">
-                    <label>Body</label>
-                    <textarea value = {bodyState} onInput = {(e) => setBody(e.target.value)} placeholder = "Body"></textarea>
-                </div>
-                <Dropdown
+            <label>
+                Title:
+                <input
+                    value = {titleState}
+                    onInput = {(e) => setTitle(e.target.value)}
+                    required
+                    minlength = '3'
+                    maxlength = '30'
+                    placeholder = "Item Title, e.g Go surfing at 6pm" />
+            </label>
+
+            <label>
+                Body:
+                <textarea
+                    value = {bodyState}
+                    onInput = {(e) => setBody(e.target.value)}
+                    required
+                    minlength = '5'
+                    maxlength = '300'
+                    placeholder = "Item Body, e.g Remember to book tickets to Hawaii" />
+            </label>
+
+            <Dropdown
                     options={tagState}
                     placeholder="Tags!"
                     multiple
@@ -117,14 +141,14 @@ const NewItem = ({match}) => {
                     value={currentTag}
                     onAddItem={(event, {value}) => { setTags(prevState => [{text: value, value}, ...prevState])}}
                     onChange={(event, {value}) => { setCurrentTag(value)}}
-                />
-                <Button.Group>
-                    {submitEditButton}
-                    {deleteButton}
-                    {markAsComplete}
-                </Button.Group>
-            </div>
+            />
+
+            {submitEditButton}  
+            {deleteButton}
+            {markAsComplete}
+            
         </form>
+    </div>)
 }
 
 export default NewItem

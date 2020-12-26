@@ -35,8 +35,8 @@ const ToDoList = ({match}) => {
             const pathName = jsonObject.completed ? `/completed/${jsonObject.id}` : `/incomplete/${jsonObject.id}`
             // Check if complete or incomplete. This will render the correct path.
             return (
-            <XBlock>
-                <div key = {jsonObject.id} className = "XMasonryCard">
+            <XBlock key = {jsonObject.id}>
+                <div className = "XMasonryCard">
                     <Link to = {pathName}>
                         <ToDoItem item = {jsonObject}/>
                     </Link>
@@ -46,7 +46,7 @@ const ToDoList = ({match}) => {
         }
     )
 
-    return (<XMasonry>
+    return (<XMasonry maxColumns = {4}>
             {renderDatabase} 
             </XMasonry>)
 }

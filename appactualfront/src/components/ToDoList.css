@@ -4,6 +4,7 @@
     100% { transform: scale(1) }
 }
  
+
 .xmasonry .xblock {
     animation: comeIn ease 0.5s;
     animation-iteration-count: 1;
@@ -11,8 +12,8 @@
 }
  
 .XMasonryCard {
-    margin: 7px;
+    margin: 15px;
     padding: 5px;
-    border-radius: 3px;
-    box-shadow: 0 1px 3px darkgray;
+    border-radius: 0px;
+    box-shadow: 0 1px 3px #000000;
 }

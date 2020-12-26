@@ -7,10 +7,10 @@ const ToDoItem = ({item}) => {
     const dateObj = new Date(item.updated_at)
     return (
       <Card>
-      <Card.Content header = {item.title}/>
-      <Card.Content meta = {`Updated: ${dateObj.toString().substr(4,17) } `}/>
-      <Card.Content description ={item.body} style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}} />
-      <Card.Content extra>{tags}</Card.Content>
+        <Card.Content header = {item.title}/>
+        <Card.Content meta = {`Updated: ${dateObj.toString().substr(4,17) } `}/>
+        <Card.Content description ={item.body} style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}} />
+        <Card.Content extra>{tags}</Card.Content>
     </Card>)
 
 

@@ -1,5 +1,7 @@
 import React from 'react'
 import ToDoList from "./ToDoList"
+import "./HomePage.css"
+
 
 const HomePage = ({match}) => {
 
