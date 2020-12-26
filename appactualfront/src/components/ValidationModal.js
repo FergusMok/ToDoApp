@@ -20,10 +20,12 @@ const ValidationModal = () => {
   })
   const { open, size } = state
 
-  const callFn = () => dispatch({ type: 'open', size: 'mini', dimmer: 'blurring' })
-
   return (
     <>
+      <button onClick={() => dispatch({ type: 'open', size: 'mini', dimmer: 'blurring' })}>
+        Mini
+      </button>
+
       <Modal
         size={size}
         open={open}
@@ -42,7 +44,6 @@ const ValidationModal = () => {
           </Button>
         </Modal.Actions>
       </Modal>
-      {callFn()}
     </>
   )
 }

@@ -4,6 +4,8 @@ import { Button, Dropdown } from 'semantic-ui-react'
 import axios from 'axios'
 import API_LINK from "../api/API_LINK"
 import "./NewItem.css"
+import { useDispatch, useSelector } from 'react-redux'
+import { navigate }  from "../redux/NavigationBar"
 import ValidationModal from './ValidationModal'
 
 const NewItem = ({match}) => {
@@ -16,6 +18,7 @@ const NewItem = ({match}) => {
     const [tagState, setTags] = useState([]);
     const [currentTag, setCurrentTag] = useState([])
     const history = useHistory();
+    const dispatch = useDispatch();
 
 
     console.log("Hello from match in newItem", match)
@@ -24,6 +27,10 @@ const NewItem = ({match}) => {
         if (match.path === "/completed/:id") { // Complete will route back to complete
             history.push("/completed")
         } else { // Create and Incomplete should route back to incomplete 
+            if (isNewItem()) {
+                dispatch(navigate("Incomplete"))
+            }
+
             history.push("/incomplete")
         }
     }

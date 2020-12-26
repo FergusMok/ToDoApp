@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import {Sticky} from 'semantic-ui-react'
 import { navigate }  from "../redux/NavigationBar"
@@ -7,6 +7,7 @@ import { navigate }  from "../redux/NavigationBar"
 
 const NavigationBar = ({match}) => {
     const dispatch = useDispatch();
+    const location = useLocation();
     // Conditional Rendering...
     const activated = useSelector(state => state.navigationState)
     const incompleteStr = "Incomplete" === activated ? ' active' : ""
