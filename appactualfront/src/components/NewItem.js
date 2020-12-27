@@ -137,7 +137,7 @@ const NewItem = ({match}) => {
                     onInput = {(e) => setTitle(e.target.value)}
                     required
                     minLength = '3'
-                    maxLength = '30'
+                    maxLength = '27'
                     placeholder = "Item Title, e.g Go surfing at 6pm" />
             </label>
 

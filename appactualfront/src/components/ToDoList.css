@@ -12,8 +12,8 @@
 }
  
 .XMasonryCard {
-    margin: 15px;
+    margin: 7px;
     padding: 5px;
-    border-radius: 0px;
-    box-shadow: 0 1px 3px #000000;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgb(31, 29, 29);
 }
