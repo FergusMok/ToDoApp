@@ -49,6 +49,7 @@ const NewItem = ({match}) => {
     }
 
     const onFormEdit = async (event) => { // Put request, should not change completed.
+        console.log("Edit called")
         event.preventDefault();
         await axios.put(`${API_LINK}/${match.params.id}`, {
             title: titleState,
@@ -104,12 +105,26 @@ const NewItem = ({match}) => {
             redirect()
     }
 
+    const markIncomplete = async () => { // Put request to mark complete
+        await axios.put(`${API_LINK}/${match.params.id}`, {
+            completed: false,
+        }).then(resp => {
+            console.log(resp)
+        }).catch(resp => console.log(resp))
+        redirect()
+    }
 
 
     // Conditional rendering of the buttons
-    const submitEditButton = <button type="submit">{isNewItem()? 'Submit': "Edit"}</button>
-    const deleteButton = isNewItem()? <></> : <button onClick = {() => deleteEntry()}> {"Delete"} </button>
-    const markAsComplete = isNewItem()? <></> : <button onClick = {() => markComplete()}>{"Complete"}</button>
+    const submitEditButton = <button type="submit">{isNewItem() ? 'Submit': "Edit"}</button>
+    const deleteButton = isNewItem() ? <></> : <button onClick = {() => deleteEntry()}> {"Delete"} </button>
+    // Double ternary
+    const completeIncompleteButton = isNewItem()? <></> : 
+        (match.path === "/completed/:id") ?
+        <button onClick = {() => markIncomplete()}>{"Mark as Incomplete"}</button> :
+        <button onClick = {() => markComplete()}>{"Mark as Complete"}</button>
+
+
     return (<div className = "NewItemBody">
                 <form onSubmit = { (event) => isNewItem()? onFormSubmit(event) : onFormEdit(event) }>
         
@@ -121,8 +136,8 @@ const NewItem = ({match}) => {
                     value = {titleState}
                     onInput = {(e) => setTitle(e.target.value)}
                     required
-                    minlength = '3'
-                    maxlength = '30'
+                    minLength = '3'
+                    maxLength = '30'
                     placeholder = "Item Title, e.g Go surfing at 6pm" />
             </label>
 
@@ -132,8 +147,8 @@ const NewItem = ({match}) => {
                     value = {bodyState}
                     onInput = {(e) => setBody(e.target.value)}
                     required
-                    minlength = '5'
-                    maxlength = '300'
+                    minLength = '5'
+                    maxLength = '300'
                     placeholder = "Item Body, e.g Remember to book tickets to Hawaii" />
             </label>
 
@@ -150,9 +165,10 @@ const NewItem = ({match}) => {
                     onChange={(event, {value}) => { setCurrentTag(value)}}
             />
 
+
             {submitEditButton}  
             {deleteButton}
-            {markAsComplete}
+            {completeIncompleteButton}
             
         </form>
     </div>)
