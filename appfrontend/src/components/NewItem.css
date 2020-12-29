@@ -89,13 +89,6 @@
     text-align: center
   }
 
-
-  input[type="checkbox"] {
-    display: inline-block;
-    width: auto;
-    margin-top: 2em;
-    margin-right: 10px;
-  }
   
   button {
     min-width: 100%;

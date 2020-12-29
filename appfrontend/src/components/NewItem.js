@@ -6,7 +6,6 @@ import API_LINK from "../api/API_LINK"
 import "./NewItem.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { navigate }  from "../redux/NavigationBar"
-import ValidationModal from './ValidationModal'
 
 const NewItem = ({match}) => {
 
