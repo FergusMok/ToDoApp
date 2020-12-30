@@ -3,9 +3,8 @@ import API_LINK from "./API_LINK"
 import axios from "axios"
 import {change_db} from '../redux/database'
 import {store} from '../redux/combineReducers'
-import { navigate }  from "../redux/NavigationBar"
-import { useSelector } from 'react-redux'
 
+import AlertBar from './AlertBar'
 
 // Get completed or incompleted
 const getDatabase = async (isCompleted) => {
