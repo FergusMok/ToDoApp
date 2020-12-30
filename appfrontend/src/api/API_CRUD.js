@@ -4,8 +4,6 @@ import axios from "axios"
 import {change_db} from '../redux/database'
 import {store} from '../redux/combineReducers'
 
-import AlertBar from './AlertBar'
-
 // Get completed or incompleted
 const getDatabase = async (isCompleted) => {
     const database = await axios.get(API_LINK + ".json")
