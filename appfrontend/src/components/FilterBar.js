@@ -18,7 +18,6 @@ const FilterBar = () => {
     const currentDatabase = useSelector( state => state.databaseState )
     const [tagss, setTagss] = useState(Set());
 
-    console.log("CALLING ME HERE")
     useEffect( () => currentDatabase.map(item => setTagss( Set(...tags, item.tag_list))), [currentDatabase])
     return <div>tags</div>
 }

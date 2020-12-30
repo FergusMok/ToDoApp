@@ -15,7 +15,6 @@ const NavigationBar = () => {
 
     const location = useLocation();
     useEffect( () => { 
-        console.log("Calling tihs only!")
         dispatch(navigate(location.pathname.slice(1,)), [])
     })
 

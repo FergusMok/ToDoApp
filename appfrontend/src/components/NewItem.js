@@ -72,7 +72,7 @@ const NewItem = ({match}) => {
                     onInput = {(e) => setBody(e.target.value)}
                     required
                     minLength = '5'
-                    maxLength = '500'
+                    maxLength = '300'
                     placeholder = "Item Body, e.g Remember to book tickets to Hawaii" />
             </label>
             <Dropdown

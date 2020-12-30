@@ -12,7 +12,7 @@ const ToDoItem = ({item, path}) => {
   const handleHide = () => setActive(false);
   
   const isCompleted = () => item.completed
-  const isCompletedButton = isCompleted() ? "Incomplete" : "Complete"
+  const isCompletedButtonText = isCompleted() ? "Incomplete" : "Complete"
 
   return ( 
 
@@ -29,7 +29,7 @@ const ToDoItem = ({item, path}) => {
           <Link to = {isCompleted() ? `/completed/${item.id}` : `/incomplete/${item.id}`}>
           <button> Edit </button>
           </Link>
-          <button type="button" onClick = {() => markCompletion(item.id, isCompleted())}> Mark as {isCompletedButton} </button>
+          <button type="button" onClick = {() => markCompletion(item.id, isCompleted())}> Mark as {isCompletedButtonText} </button>
         </Dimmer>
       </Dimmer.Dimmable>
     </div>
