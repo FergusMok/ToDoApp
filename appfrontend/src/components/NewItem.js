@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { useHistory } from 'react-router-dom';
-import { Button, Dropdown } from 'semantic-ui-react'
+import { Dropdown } from 'semantic-ui-react'
 import axios from 'axios'
 import API_LINK from "../api/API_LINK"
 import "./NewItem.css"
-import { useDispatch, useSelector } from 'react-redux'
-import { navigate }  from "../redux/NavigationBar"
+import {markCompletion, deleteEntry, onFormEdit, onFormSubmit} from "../api/API_CRUD"
+
 
 const NewItem = ({match}) => {
 
@@ -16,61 +15,12 @@ const NewItem = ({match}) => {
     // The tagInputBar requires 2 states to work. 
     const [tagState, setTags] = useState([]);
     const [currentTag, setCurrentTag] = useState([])
-    const history = useHistory();
-    const dispatch = useDispatch();
 
-
-    console.log("Hello from match in newItem", match)
-
-    const redirect = () => { // Redirect once CRUD operaton is done. 
-        if (match.path === "/completed/:id") { // Complete will route back to complete
-            history.push("/completed")
-        } else { // Create and Incomplete should route back to incomplete 
-            if (isNewItem()) {
-                dispatch(navigate("Incomplete"))
-            }
-
-            history.push("/incomplete")
-        }
-    }
-
-    // Completed defaulted to be false 
-    const onFormSubmit = async (event) => {
-        event.preventDefault();
-        await axios.post(API_LINK, {
-            title: titleState,
-            body: bodyState,
-            tag_list: currentTag.toString()
-        }).then(resp => {
-            console.log(resp)
-        }).catch(resp => console.log(resp))
-        redirect()
-    }
-
-    const onFormEdit = async (event) => { // Put request, should not change completed.
-        console.log("Edit called")
-        event.preventDefault();
-        await axios.put(`${API_LINK}/${match.params.id}`, {
-            title: titleState,
-            body: bodyState,
-            tag_list: currentTag.toString()
-        }).catch(error => {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx. This is for troubleshooting only.
-                // The input bar should handle the validation. 
-                console.log("Data",error.response.data);
-            } else {
-                console.log("Error",error)
-            }
-        })
-        redirect()
-    }
 
     const isNewItem = () => (match.path === "/create")
+    const isCompleted = () => (match.path === "/completed/:id")
 
     useEffect( () => { // Fills up the form for put request.
-        console.log("render")
         const refreshArticle = async () => {
             if (!isNewItem()) {
                 const itemDetails = await axios.get(`${API_LINK}/${match.params.id}`)
@@ -90,45 +40,21 @@ const NewItem = ({match}) => {
         }
         refreshArticle()}, [match.path])
 
-    const deleteEntry = async () => { // Destroy
-            await axios.delete(`${API_LINK}/${match.params.id}`)
-            redirect()
-        }
     
-    const markComplete = async () => { // Put request to mark complete
-            await axios.put(`${API_LINK}/${match.params.id}`, {
-                completed: true,
-            }).then(resp => {
-                console.log(resp)
-            }).catch(resp => console.log(resp))
-            redirect()
-    }
-
-    const markIncomplete = async () => { // Put request to mark complete
-        await axios.put(`${API_LINK}/${match.params.id}`, {
-            completed: false,
-        }).then(resp => {
-            console.log(resp)
-        }).catch(resp => console.log(resp))
-        redirect()
-    }
-
-
     // Conditional rendering of the buttons
     const submitEditButton = <button type="submit">{isNewItem() ? 'Submit': "Edit"}</button>
-    const deleteButton = isNewItem() ? <></> : <button onClick = {() => deleteEntry()}> {"Delete"} </button>
+    const deleteButton = isNewItem() ? <></> : <button onClick = {() => deleteEntry(match.params.id, match)}> {"Delete"} </button>
     // Double ternary
-    const completeIncompleteButton = isNewItem()? <></> : 
-        (match.path === "/completed/:id") ?
-        <button onClick = {() => markIncomplete()}>{"Mark as Incomplete"}</button> :
-        <button onClick = {() => markComplete()}>{"Mark as Complete"}</button>
-
+    const completeIncompleteButton = isNewItem() ? <></> : 
+        (isCompleted()) ?
+        <button onClick = {() => markCompletion(match.params.id, true)}>{"Mark as Incomplete"}</button> :
+        <button onClick = {() => markCompletion(match.params.id, false)}>{"Mark as Complete"}</button>
 
     return (<div className = "NewItemBody">
-                <form onSubmit = { (event) => isNewItem()? onFormSubmit(event) : onFormEdit(event) }>
-        
-            <h1> {isNewItem()? 'Create new item!': "Edit item!"} </h1>
+                <form onSubmit = { (event) => isNewItem()? onFormSubmit(event, titleState, bodyState, currentTag.toString(), match) : 
+                    onFormEdit(event, match.params.id, titleState, bodyState, currentTag.toString(), match) }>
 
+            <h1> {isNewItem()? 'Create new item!': "Edit item!"} </h1>
             <label>
                 Title:
                 <input
@@ -139,7 +65,6 @@ const NewItem = ({match}) => {
                     maxLength = '27'
                     placeholder = "Item Title, e.g Go surfing at 6pm" />
             </label>
-
             <label>
                 Body:
                 <textarea
@@ -147,10 +72,9 @@ const NewItem = ({match}) => {
                     onInput = {(e) => setBody(e.target.value)}
                     required
                     minLength = '5'
-                    maxLength = '300'
+                    maxLength = '500'
                     placeholder = "Item Body, e.g Remember to book tickets to Hawaii" />
             </label>
-
             <Dropdown
                     options={tagState}
                     placeholder="Tags!"
@@ -163,12 +87,9 @@ const NewItem = ({match}) => {
                     onAddItem={(event, {value}) => { setTags(prevState => [{text: value, value}, ...prevState])}}
                     onChange={(event, {value}) => { setCurrentTag(value)}}
             />
-
-
             {submitEditButton}  
             {deleteButton}
             {completeIncompleteButton}
-            
         </form>
     </div>)
 }

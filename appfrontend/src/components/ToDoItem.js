@@ -1,55 +1,35 @@
 import React, { useState } from "react";
-import { Dimmer, Segment } from "semantic-ui-react";
+import { Dimmer } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import ToDoCard from './ToDoCard'
-import axios from 'axios'
-import API_LINK from "../api/API_LINK"
 import "./ToDoItem.css"
-const ToDoItem = ({item, path, getDatabase}) => {
+import {markCompletion} from "../api/API_CRUD"
+
+const ToDoItem = ({item, path}) => {
 
   const [active, setActive] = useState(false);
-
   const handleShow = () => setActive(true);
   const handleHide = () => setActive(false);
   
-  const markComplete = async (id) => { // Put request to mark complete
-    await axios.put(`${API_LINK}/${id}`, {
-        completed: true,
-    }).then(resp => {
-        console.log(resp)
-    }).catch(resp => console.log(resp))
-    getDatabase()
-  }
-
-  const markIncomplete = async () => { // Put request to mark complete
-  await axios.put(`${API_LINK}/${item.id}`, {
-      completed: false,
-  }).then(resp => {
-      console.log(resp)
-  }).catch(resp => console.log(resp))
-    getDatabase()
-  }
-
   const isCompleted = () => item.completed
   const isCompletedButton = isCompleted() ? "Incomplete" : "Complete"
-  const onClickCompleted = (id) => isCompleted() ? markIncomplete(id) : markComplete(id)
 
-  return   ( 
+  return ( 
 
      <div onMouseEnter = {handleShow} onMouseLeave = {handleHide} >
       <Dimmer.Dimmable blurring dimmed={active}>
         <Dimmer active={active} inverted onClickOutside={handleHide} />
-          <ToDoCard item = {item} path = {path}/>
+          <ToDoCard item = {item}/>
         <Dimmer
           active={active}
           onClickOutside={handleHide}
           verticalAlign="centre" 
           // This will throw a warning. Semantic enum-ed arg as top or botom only. 
         >
-          <Link to = {path}>
+          <Link to = {isCompleted() ? `/completed/${item.id}` : `/incomplete/${item.id}`}>
           <button> Edit </button>
           </Link>
-          <button type="button" onClick = {() => onClickCompleted(item.id)}> Mark as {isCompletedButton} </button>
+          <button type="button" onClick = {() => markCompletion(item.id, isCompleted())}> Mark as {isCompletedButton} </button>
         </Dimmer>
       </Dimmer.Dimmable>
     </div>

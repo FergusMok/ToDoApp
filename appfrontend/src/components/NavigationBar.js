@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import {Sticky} from 'semantic-ui-react'
@@ -9,9 +9,15 @@ const NavigationBar = () => {
     const dispatch = useDispatch();
     // Conditional Rendering...
     const activated = useSelector(state => state.navigationState)
-    const incompleteStr = "Incomplete" === activated ? ' active' : ""
-    const createStr = "Create" === activated ? ' active' : ""
-    const completeStr = "Completed" === activated ? ' active' : ""
+    const incompleteStr = "incomplete" === activated ? ' active' : ""
+    const createStr = "create" === activated ? ' active' : ""
+    const completeStr = "completed" === activated ? ' active' : ""
+
+    const location = useLocation();
+    useEffect( () => { 
+        console.log("Calling tihs only!")
+        dispatch(navigate(location.pathname.slice(1,)), [])
+    })
 
     return (
         <Sticky>

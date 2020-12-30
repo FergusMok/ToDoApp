@@ -35,7 +35,17 @@ module Api
             def destroy
                 @items = Item.find(params[:id])
                 @items.destroy
-                render json: {status: 'Sucessful!', message:"Deleted my item", data: @item}, status: :ok
+                render json: {status: 'Sucessful!', message:"Deleted my item", data: @items}, status: :ok
+            end
+            
+            def showCompleted
+                @items = Item.where(completed: true)
+                render json: {status: 'Sucessful!', message:"Successfully showed all completed items", data: @items}, status: :ok
+            end
+
+            def showIncompleted
+                @items = Item.where(completed: false)
+                render json: {status: 'Sucessful!', message:"Successfully showed all incompleted items", data: @items}, status: :ok
             end
 
             private
