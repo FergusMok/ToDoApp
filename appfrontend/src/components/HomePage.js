@@ -1,6 +1,6 @@
 import React from 'react'
 import ToDoList from "./ToDoList"
-import "./HomePage.css"
+import "./CSS/HomePage.css"
   
 const HomePage = ({match}) => {
     return ( <ToDoList match = {match} />

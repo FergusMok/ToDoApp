@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Dropdown } from 'semantic-ui-react'
 import axios from 'axios'
 import API_LINK from "../api/API_LINK"
-import "./NewItem.css"
+import "./CSS/NewItem.css"
 import {markCompletion, deleteEntry, onFormEdit, onFormSubmit} from "../api/API_CRUD"
 
 

@@ -4,7 +4,7 @@ import { XMasonry, XBlock } from "react-xmasonry"
 
 import ToDoItem from "./ToDoItem"
 import {getDatabase} from "../api/API_CRUD"
-import './ToDoList.css'
+import './CSS/ToDoList.css'
 
 const ToDoList = ({match}) => {
     const activated = useSelector(state => state.navigationState)

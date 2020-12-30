@@ -1,7 +1,7 @@
 import React from "react"
 import { Card, Label } from 'semantic-ui-react'
 import {addTag, removeTag, tagReducer} from "../redux/tagFilter"
-import './ToDoCard.css'
+import './CSS/ToDoCard.css'
 import { useSelector } from "react-redux";
 const ToDoCard = ({item}) => {
 

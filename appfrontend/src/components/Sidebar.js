@@ -4,7 +4,7 @@ import { FaGem, FaHeart } from "react-icons/fa";
 
 
 
-// Not in use 
+// NOT IMPLMENETED YET 
 const Sidebar = () => {
     return <ProSidebar>
       <Menu iconShape="square">

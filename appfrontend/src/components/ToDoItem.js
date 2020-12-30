@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Dimmer } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import ToDoCard from './ToDoCard'
-import "./ToDoItem.css"
+import "./CSS/ToDoItem.css"
 import {markCompletion} from "../api/API_CRUD"
 
 const ToDoItem = ({item, path}) => {
