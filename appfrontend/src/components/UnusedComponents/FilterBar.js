@@ -12,10 +12,10 @@ import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import axios from 'axios'
 
-import {change_db} from '../redux/database'
-import ToDoItem from "./ToDoItem"
-import API_LINK from "../api/API_LINK"
-import {GetDatabase} from "../api/API_CRUD"
+import {change_db} from '../../redux/database'
+import ToDoItem from "../ToDoItem"
+import API_LINK from "../../api/API_LINK"
+import {GetDatabase} from "../../api/API_CRUD"
 
 
 const FilterBar = () => {
