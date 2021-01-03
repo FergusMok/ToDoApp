@@ -1,0 +1,37 @@
+version: '3'
+services:
+  web:   # docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app <container_id> 
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - .:/app
+  tests:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes: # Tests don't need ports
+      - /app/node_modules
+      - .:/app
+    command: ['npm', 'run', 'test']
+
+
+
+# To actually build, we will docker build . 
+# and docker run -p 8080:80 <container_id>
+# This will run the nginx version.
+# This will not use the docker-compose file, and only Dockerfile.
+
+# To develop and test, we will be doing tests and web container.
+# docker-compose up 
+# Then, in a new tab, we can get the test container and 
+# docker exec -it <container_id> npm run test, and interact from there
+
+# In a new tab, we can also develop the container 

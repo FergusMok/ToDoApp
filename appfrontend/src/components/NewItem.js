@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback } from 'react'
 import { Dropdown } from 'semantic-ui-react'
 import axios from 'axios'
 import API_LINK from "../api/API_LINK"
@@ -17,8 +17,8 @@ const NewItem = ({match}) => {
     const [currentTag, setCurrentTag] = useState([])
 
 
-    const isNewItem = () => (match.path === "/create")
-    const isCompleted = () => (match.path === "/completed/:id")
+    const isNewItem = useCallback(() => (match.path === "/create"), [match])
+    const isCompleted = useCallback(() => (match.path === "/completed/:id"), [match]) 
 
     useEffect( () => { // Fills up the form for put request.
         const refreshArticle = async () => {

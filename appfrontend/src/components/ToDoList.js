@@ -10,7 +10,9 @@ const ToDoList = ({match}) => {
     const activated = useSelector(state => state.navigationState)
     const currentDatabase = useSelector(state => state.databaseState)
 
-    useEffect( () => getDatabase(match.path !== "/incomplete") ,[activated] )
+    useEffect( () => {
+        getDatabase(match.path !== "/incomplete")
+    } ,[activated] )
     
     // This has very high complexity, may bottleneck here.
     const renderDatabase = currentDatabase.sort( (a,b) => new Date(b.updated_at) - new Date(a.updated_at)).map( 
