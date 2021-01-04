@@ -2,8 +2,6 @@ version: '3'
 services:
   web:   # docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app <container_id> 
     stdin_open: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -12,17 +10,21 @@ services:
     volumes:
       - /app/node_modules
       - .:/app
-  tests:
-    stdin_open: true
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    volumes: # Tests don't need ports
-      - /app/node_modules
-      - .:/app
-    command: ['npm', 'run', 'test']
+  #tests:
+    #stdin_open: true
+    #build:
+      #context: .
+      #dockerfile: Dockerfile.dev
+    #volumes: # Tests don't need ports
+      #- /app/node_modules
+      #- .:/app
+    #command: ['npm', 'run', 'test']
 
 
+# TO RUN COMPOSE, RUN docker-compose up --build 
+# Because docker likes to cache the compose file, and assume it wasn't changed.
+# the --build will force a whole re-build.
+# This thing alone costed me HOURS.
 
 # To actually build, we will docker build . 
 # and docker run -p 8080:80 <container_id>

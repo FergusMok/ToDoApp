@@ -25,10 +25,13 @@ development:
   adapter: postgresql
   encoding: unicode
   database: app
-  host: localhost
+  host: db
   pool: 5
-  username: fergus
+  username: postgres
   password: '123456'
+  development: 
+  <<: *default
+  database: myapp_development
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
   #port: 5432

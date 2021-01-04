@@ -1,9 +1,17 @@
 import React from 'react'
 import ToDoList from "./ToDoList"
 import "./CSS/HomePage.css"
-  
+import { Segment } from 'semantic-ui-react'
+import FilterBar from "./FilterBar"
+
+
 const HomePage = ({match}) => {
-    return ( <ToDoList match = {match} />
+    return ( 
+    <div>
+    <FilterBar match = {match} />
+    <ToDoList match = {match} />
+
+    </div>
 
 /*      For a future implementation:
            <div id="outer-container">

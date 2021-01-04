@@ -38,13 +38,13 @@ module Api
                 render json: {status: 'Sucessful!', message:"Deleted my item", data: @items}, status: :ok
             end
             
-            def showCompleted
-                @items = Item.where(completed: true)
+            def showCompletedTags
+                @items = Item.where(completed:true).tag_counts.map(&:name)
                 render json: {status: 'Sucessful!', message:"Successfully showed all completed items", data: @items}, status: :ok
             end
 
-            def showIncompleted
-                @items = Item.where(completed: false)
+            def showIncompletedTags
+                @items = Item.where(completed:false).tag_counts.map(&:name)
                 render json: {status: 'Sucessful!', message:"Successfully showed all incompleted items", data: @items}, status: :ok
             end
 

@@ -15,7 +15,6 @@ const ToDoItem = ({item, path}) => {
   const isCompletedButtonText = isCompleted() ? "Incomplete" : "Complete"
 
   return ( 
-
      <div onMouseEnter = {handleShow} onMouseLeave = {handleHide} >
       <Dimmer.Dimmable blurring dimmed={active}>
         <Dimmer active={active} inverted onClickOutside={handleHide} />

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { XMasonry, XBlock } from "react-xmasonry"
 
@@ -26,9 +26,19 @@ const ToDoList = ({match}) => {
                 </div>
              </XBlock>
         )})
-    return (<XMasonry maxColumns = {4}>
-            {renderDatabase} 
-            </XMasonry>)
+
+    // If renderDatabase is loading, we'll need buffer some things first right
+    const displayDatabase = useCallback(() => {
+        if (renderDatabase !== []) {
+            return <XMasonry maxColumns = {4}>
+                {renderDatabase}
+                </XMasonry>
+        } else {
+            return <div>"LOADING..."</div>
+        }
+    }, [renderDatabase])
+
+    return displayDatabase()
 }
 
 export default ToDoList

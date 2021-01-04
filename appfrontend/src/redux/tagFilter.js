@@ -1,3 +1,5 @@
+// This is the tags that the person will be selecting
+
 const addTag = (tag) => {
     return {
         type: "ADDTAGTOFILTER",
