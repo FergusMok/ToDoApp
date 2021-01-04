@@ -5,7 +5,7 @@ import ToDoCard from './ToDoCard'
 import "./CSS/ToDoItem.css"
 import {markCompletion} from "../api/API_CRUD"
 
-const ToDoItem = ({item, path}) => {
+const ToDoItem = ({item}) => {
 
   const [active, setActive] = useState(false);
   const handleShow = () => setActive(true);

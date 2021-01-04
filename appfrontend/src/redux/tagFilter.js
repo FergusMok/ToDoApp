@@ -17,9 +17,9 @@ const removeTag = (tag) => {
 const tagReducer = (state = [], action) => {
     switch(action.type) {
         case 'ADDTAGTOFILTER':
-            return [...state, action.payload]
+            return action.payload
         case 'REOMVETAGTOFILTER':
-            return state.filter( tag => tag !== action.payload)
+            return action.payload
         default:
             return state
     }
