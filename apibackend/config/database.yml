@@ -31,7 +31,7 @@ development:
   password: '123456'
   development: 
   <<: *default
-  database: myapp_development
+  database: myapplication_database
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
   #port: 5432

@@ -4,6 +4,7 @@ services:
     image: postgres
     environment:
       POSTGRES_PASSWORD: "123456"
+      POSTGRES_DB: "myapp_development"
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
   web:
