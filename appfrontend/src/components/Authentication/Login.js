@@ -4,6 +4,8 @@ import { Message } from "semantic-ui-react";
 import "../CSS/NewItem.css";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { onFormSubmitLogin, onFormSubmitRegister } from "../../api/API_AUTHEN";
+import { Button, Icon } from "semantic-ui-react";
 
 const Login = ({ match }) => {
   const [email, setEmail] = useState("");
@@ -17,74 +19,6 @@ const Login = ({ match }) => {
   const isLogin = match.path === "/login";
 
   // Upon logging in, redux will store this person's account ID.
-  const onFormSubmitLogin = (event) => {
-    event.preventDefault();
-    console.log("Submitted");
-    axios
-      .post(
-        "http://localhost:5000/api/v1/sessions",
-        {
-          user: {
-            email: email.toLowerCase(),
-            password: password,
-          },
-        },
-        { withCredentials: true }
-      )
-      .then((response) => {
-        if (response.data.logged_in) {
-          console.log(response);
-          console.log("Logged in yo!", response.data.logged_in);
-          history.push("/incomplete");
-          return true;
-        } else {
-          setMessage("Wrong email and/or password!");
-          setVisible(true);
-          console.log("Not logged in ", response);
-          return false;
-        }
-      })
-      .catch((error) => {
-        console.log("login error", error);
-      });
-  };
-
-  const onFormSubmitRegister = (event) => {
-    event.preventDefault();
-
-    if (password !== passwordConfirmation) {
-      console.log(password, passwordConfirmation);
-      setMessage("Passwords do not match!");
-      setVisible(true);
-    } else {
-      console.log("Submitted Register");
-      console.log(email, name, password, passwordConfirmation);
-      axios
-        .post(
-          "http://localhost:5000/api/v1/registrations",
-          {
-            user: {
-              email: email.toLowerCase(),
-              name: name,
-              password: password,
-              password_confirmation: passwordConfirmation,
-            },
-          },
-          { withCredentials: true }
-        )
-        .then((response) => {
-          if (response.data.status === "created") {
-            console.log("Logged in yo!");
-            history.push("/incomplete");
-          }
-        })
-        .catch((error) => {
-          setMessage("Invalid email and/or password!");
-          setVisible(true);
-          console.log("login error", error);
-        });
-    }
-  };
 
   const nameForm = isLogin ? (
     <> </>
@@ -116,10 +50,27 @@ const Login = ({ match }) => {
     <> </>
   );
 
+  const moveToOther = isLogin ? (
+    <Button fluid onClick={() => history.push("/register")}>
+      Don't have an account? Register <Icon name="right arrow" />
+    </Button>
+  ) : (
+    <Button fluid onClick={() => history.push("/login")}>
+      Have an account? Login <Icon name="right arrow" />
+    </Button>
+  );
+
   return (
     <div className="NewItemBody">
-      <form onSubmit={isLogin ? onFormSubmitLogin : onFormSubmitRegister}>
+      <form
+        onSubmit={(event) =>
+          isLogin
+            ? onFormSubmitLogin(event, history, setMessage, setVisible, email, password)
+            : onFormSubmitRegister(event, history, setMessage, setVisible, email, password, passwordConfirmation, name)
+        }
+      >
         <h1> {isLogin ? "Login" : "Register an account!"} </h1>
+
         <label>
           Email:
           <input
@@ -143,8 +94,8 @@ const Login = ({ match }) => {
           />
         </label>
         {passwordConfirmationInput}
-
         <button type="submit">{isLogin ? "Login" : "Register!"}</button>
+        <div style={{ marginLeft: "auto", marginRight: "auto", width: "50vh", marginTop: "4vh" }}>{moveToOther}</div>
       </form>
       {alert}
     </div>

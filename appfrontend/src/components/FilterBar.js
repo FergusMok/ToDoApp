@@ -1,7 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Dropdown } from "semantic-ui-react";
 import { addTag } from "../redux/tagFilter";
+import {
+  Dropdown,
+  Button,
+  Container,
+  Grid,
+  Header,
+  Icon,
+  Image,
+  Item,
+  Label,
+  Menu,
+  Segment,
+  Step,
+  Table,
+} from "semantic-ui-react";
 
 const FilterBar = ({ match }) => {
   const currentDatabase = useSelector((state) => state.databaseState);
@@ -37,17 +51,23 @@ const FilterBar = ({ match }) => {
   }, [match]);
 
   return (
-    <Dropdown
-      placeholder="Skills"
-      fluid
-      multiple
-      selection
-      options={tagOptions}
-      value={currentTag}
-      onChange={(event, { value }) => {
-        dispatch(addTag(value));
-      }}
-    />
+    <Container>
+      <Grid columns={1} stackable>
+        <Grid.Column>
+          <Dropdown
+            placeholder="Filter by Tags"
+            fluid
+            multiple
+            selection
+            options={tagOptions}
+            value={currentTag}
+            onChange={(event, { value }) => {
+              dispatch(addTag(value));
+            }}
+          />
+        </Grid.Column>
+      </Grid>
+    </Container>
   );
 };
 

@@ -1,26 +1,25 @@
-
-  body {
-    font-family: Lato;
-    height: 97vh;
-    width: 100%;
-    background-color: #4A4E69; 
-  }
+body {
+  font-family: Lato;
+  height: 100vh;
+  width: 100%;
+  background-color: #1b1c1d;
+}
 
 /* All three below not in use yet. */
-  .outer-container {
-    display: table;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .sidebar {
-    display: table-cell;
-    width: 15%;
-    vertical-align: top;
-  }
-  
-  .content {
-    display: table-cell;
-    width: 85%;
-    vertical-align: top;
-  }
+.outer-container {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar {
+  display: table-cell;
+  width: 15%;
+  vertical-align: top;
+}
+
+.content {
+  display: table-cell;
+  width: 85%;
+  vertical-align: top;
+}

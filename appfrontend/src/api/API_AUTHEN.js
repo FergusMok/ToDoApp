@@ -30,4 +30,61 @@ const logOut = (history) => {
   });
 };
 
-export { isLoggedIn, logOut };
+const onFormSubmitLogin = (event, history, setMessage, setVisible, email, password) => {
+  event.preventDefault();
+  axios
+    .post(
+      "http://localhost:5000/api/v1/sessions",
+      {
+        user: {
+          email: email.toLowerCase(),
+          password: password,
+        },
+      },
+      { withCredentials: true }
+    )
+    .then((response) => {
+      if (response.data.logged_in) {
+        history.push("/incomplete");
+        return true;
+      } else {
+        setMessage("Wrong email and/or password!");
+        setVisible(true);
+        return false;
+      }
+    })
+    .catch((error) => {});
+};
+
+const onFormSubmitRegister = (event, history, setMessage, setVisible, email, password, passwordConfirmation, name) => {
+  event.preventDefault();
+  if (password !== passwordConfirmation) {
+    setMessage("Passwords do not match!");
+    setVisible(true);
+  } else {
+    axios
+      .post(
+        "http://localhost:5000/api/v1/registrations",
+        {
+          user: {
+            email: email.toLowerCase(),
+            name: name,
+            password: password,
+            password_confirmation: passwordConfirmation,
+          },
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        if (response.data.status === "created") {
+          history.push("/incomplete");
+        }
+      })
+      .catch((error) => {
+        setMessage("Invalid email and/or password!");
+        setVisible(true);
+      });
+  }
+};
+
+export { isLoggedIn, logOut, onFormSubmitRegister, onFormSubmitLogin };
