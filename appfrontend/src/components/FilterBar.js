@@ -36,7 +36,6 @@ const FilterBar = ({ match }) => {
     dispatch(addTag([])); // Reset the dropdown animation when change to a new page
   }, [match]);
 
-  console.log(currentTag);
   return (
     <Dropdown
       placeholder="Skills"

@@ -1,7 +1,7 @@
 import React from "react";
 
-const TestingPage = ({ match }) => {
-  console.log("match", match);
+const TestingPage = (props) => {
+  console.log(props);
   return "HELLO";
 };
 

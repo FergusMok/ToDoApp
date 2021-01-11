@@ -25,7 +25,6 @@ const NewItem = ({ match }) => {
     // Fills up the form for put request.
     const refreshArticle = async () => {
       if (!isNewItem()) {
-        console.log("Im here!");
         const itemDetails = await axios.get(`${API_LINK_ITEMS_POSTFIX}/${match.params.id}`);
         setTitle(itemDetails.data.data.title);
         setBody(itemDetails.data.data.body);

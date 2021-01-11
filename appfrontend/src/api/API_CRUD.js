@@ -36,7 +36,6 @@ const redirect = (match, history) => {
     history.push("/completed");
   } else {
     // Create and Incomplete should route back to incomplete
-    console.log(isNewItem, isCompleted, match.path);
     history.push("/incomplete");
   }
 };
@@ -65,9 +64,7 @@ const onFormSubmit = async (event, user_id, title, body, tag_list, match, histor
 };
 
 const onFormEdit = async (event, user_id, id, title, body, tag_list, match, history) => {
-  console.log("Edit called");
   event.preventDefault();
-  console.log(tag_list);
   await axios
     .put(`${API_LINK_ITEMS_POSTFIX}/${id}`, {
       // ES15 syntax

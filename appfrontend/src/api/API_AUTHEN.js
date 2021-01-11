@@ -12,10 +12,8 @@ const isLoggedIn = async () => {
     if (response.data.logged_in) {
       store.dispatch(addID(response.data.user.id));
       store.dispatch(addName(response.data.user.name));
-      console.log("RESPONSE FROM ISLOGGEDIN IS TRUE!!!");
       return true;
     } else {
-      console.log("RESPONSE FROM ISLOGGEDIN IS FALSE!!!");
       return false;
     }
   } catch (err) {

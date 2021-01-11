@@ -13,7 +13,6 @@ const App = () => {
   return (
     <>
       <Router>
-        <NavigationBar />
         <Switch>
           <AuthenticatedRoutes path="/incomplete" exact component={HomePage} />
           <AuthenticatedRoutes path="/completed" exact component={HomePage} />
