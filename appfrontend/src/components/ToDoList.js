@@ -11,6 +11,8 @@ const ToDoList = ({ match }) => {
   const currentDatabase = useSelector((state) => state.databaseState);
   const currentTag = useSelector((state) => state.tagState);
 
+  console.log(match.path);
+
   useEffect(() => {
     getDatabase(match.path !== "/incomplete");
   }, [activated]);
@@ -18,10 +20,7 @@ const ToDoList = ({ match }) => {
   const filterBasedOnTag = (jsonObject) => {
     // If currentTag is not empty, then we will filter based on currentTag
     if (currentTag.length > 0) {
-      if (
-        jsonObject.tag_list.filter((e) => currentTag.indexOf(e) !== -1).length >
-        0
-      ) {
+      if (jsonObject.tag_list.filter((e) => currentTag.indexOf(e) !== -1).length > 0) {
         return true;
       } else {
         return false;

@@ -18,11 +18,7 @@ const FilterBar = ({ match }) => {
       const tagsList = [
         ...new Set(
           currentDatabase
-            .filter(
-              (jsonObject) =>
-                jsonObject.completed === isCompleted() &&
-                jsonObject.tag_list.length > 0
-            )
+            .filter((jsonObject) => jsonObject.completed === isCompleted() && jsonObject.tag_list.length > 0)
             .map((jsonObject) => jsonObject.tag_list)
         ),
       ];

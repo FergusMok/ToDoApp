@@ -1,18 +1,22 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Message } from "semantic-ui-react";
-import "../CSS/Login.css";
+import "../CSS/NewItem.css";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const Login = ({ match }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
+  const history = useHistory();
 
-  const isLogin = () => false;
+  const isLogin = match.path === "/login";
 
+  // Upon logging in, redux will store this person's account ID.
   const onFormSubmitLogin = (event) => {
     event.preventDefault();
     console.log("Submitted");
@@ -21,7 +25,7 @@ const Login = ({ match }) => {
         "http://localhost:5000/api/v1/sessions",
         {
           user: {
-            email: email,
+            email: email.toLowerCase(),
             password: password,
           },
         },
@@ -29,12 +33,15 @@ const Login = ({ match }) => {
       )
       .then((response) => {
         if (response.data.logged_in) {
+          console.log(response);
           console.log("Logged in yo!", response.data.logged_in);
-          window.history.pushState({ urlPath: "/incompleted" }, "", "/incompleted");
+          history.push("/incomplete");
+          return true;
         } else {
           setMessage("Wrong email and/or password!");
           setVisible(true);
           console.log("Not logged in ", response);
+          return false;
         }
       })
       .catch((error) => {
@@ -51,12 +58,14 @@ const Login = ({ match }) => {
       setVisible(true);
     } else {
       console.log("Submitted Register");
+      console.log(email, name, password, passwordConfirmation);
       axios
         .post(
           "http://localhost:5000/api/v1/registrations",
           {
             user: {
-              email: email,
+              email: email.toLowerCase(),
+              name: name,
               password: password,
               password_confirmation: passwordConfirmation,
             },
@@ -66,18 +75,26 @@ const Login = ({ match }) => {
         .then((response) => {
           if (response.data.status === "created") {
             console.log("Logged in yo!");
-            window.history.pushState({ urlPath: "/incompleted" }, "", "Send me off to incompleted pls!");
+            history.push("/incomplete");
           }
         })
         .catch((error) => {
           setMessage("Invalid email and/or password!");
           setVisible(true);
-          console.log("login error", error.status);
+          console.log("login error", error);
         });
     }
   };
 
-  const passwordConfirmationInput = isLogin() ? (
+  const nameForm = isLogin ? (
+    <> </>
+  ) : (
+    <label>
+      First Name:
+      <input required placeholder="Let us know how to address you" onInput={(e) => setName(e.target.value)} />
+    </label>
+  );
+  const passwordConfirmationInput = isLogin ? (
     <></>
   ) : (
     <label>
@@ -91,7 +108,6 @@ const Login = ({ match }) => {
       />
     </label>
   );
-
   const alert = visible ? (
     <Message onDismiss={() => setVisible(false)} negative size="large">
       {message}
@@ -102,8 +118,8 @@ const Login = ({ match }) => {
 
   return (
     <div className="NewItemBody">
-      <form onSubmit={isLogin() ? onFormSubmitLogin : onFormSubmitRegister}>
-        <h1> {isLogin() ? "Login" : "Register an account!"} </h1>
+      <form onSubmit={isLogin ? onFormSubmitLogin : onFormSubmitRegister}>
+        <h1> {isLogin ? "Login" : "Register an account!"} </h1>
         <label>
           Email:
           <input
@@ -114,6 +130,8 @@ const Login = ({ match }) => {
             placeholder="Enter your email here"
           />
         </label>
+        {nameForm}
+
         <label>
           Password:
           <input
@@ -125,7 +143,8 @@ const Login = ({ match }) => {
           />
         </label>
         {passwordConfirmationInput}
-        <button type="submit">{isLogin() ? "Login" : "Register!"}</button>
+
+        <button type="submit">{isLogin ? "Login" : "Register!"}</button>
       </form>
       {alert}
     </div>

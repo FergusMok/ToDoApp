@@ -9,7 +9,6 @@ const ToDoItem = ({ item }) => {
   const [active, setActive] = useState(false);
   const handleShow = () => setActive(true);
   const handleHide = () => setActive(false);
-
   const isCompleted = () => item.completed;
   const isCompletedButtonText = isCompleted() ? "Incomplete" : "Complete";
 
@@ -24,17 +23,10 @@ const ToDoItem = ({ item }) => {
           verticalAlign="centre"
           // This will throw a warning. Semantic enum-ed arg as top or botom only.
         >
-          <Link
-            to={
-              isCompleted() ? `/completed/${item.id}` : `/incomplete/${item.id}`
-            }
-          >
+          <Link to={isCompleted() ? `/completed/${item.id}` : `/incomplete/${item.id}`}>
             <button> Edit </button>
           </Link>
-          <button
-            type="button"
-            onClick={() => markCompletion(item.id, isCompleted())}
-          >
+          <button type="button" onClick={() => markCompletion(item.id, isCompleted())}>
             {" "}
             Mark as {isCompletedButtonText}{" "}
           </button>

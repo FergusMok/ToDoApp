@@ -5,9 +5,11 @@ import { change_db } from "../redux/database";
 import { store } from "../redux/combineReducers";
 
 // Get completed or incompleted
-const getDatabase = async (isCompleted) => {
-  const database = await axios.get(API_LINK_ITEMS_POSTFIX);
-  store.dispatch(change_db(database.data.data.filter((item) => item.completed === isCompleted)));
+const getDatabase = (isCompleted) => {
+  const database = axios
+    .get("http://localhost:5000/api/v1/specialshow", { withCredentials: true })
+    .then((resp) => store.dispatch(change_db(resp.data.data.filter((item) => item.completed === isCompleted))))
+    .catch((errors) => console.log(errors));
 };
 
 // I split the tags because it's much faster (hypothetically half), especially if we have alot of tags.
@@ -32,14 +34,10 @@ const redirect = (match, history) => {
   if (isCompleted) {
     // Complete will route back to complete
     history.push("/completed");
-    /*     window.location.href = "/completed";
-     */
   } else {
     // Create and Incomplete should route back to incomplete
     console.log(isNewItem, isCompleted, match.path);
     history.push("/incomplete");
-    /*     window.location.href = "/incomplete";
-     */
   }
 };
 
@@ -49,10 +47,12 @@ const deleteEntry = async (id) => {
 };
 
 // Completed defaulted to be false
-const onFormSubmit = async (event, title, body, tag_list, match, history) => {
+const onFormSubmit = async (event, user_id, title, body, tag_list, match, history) => {
   event.preventDefault();
+  console.log("userid, title, body, tag_list", user_id, title, body, tag_list);
   await axios
     .post(API_LINK_ITEMS_POSTFIX, {
+      user_id,
       title,
       body,
       tag_list,
@@ -64,13 +64,14 @@ const onFormSubmit = async (event, title, body, tag_list, match, history) => {
   redirect(match, history);
 };
 
-const onFormEdit = async (event, id, title, body, tag_list, match, history) => {
+const onFormEdit = async (event, user_id, id, title, body, tag_list, match, history) => {
   console.log("Edit called");
   event.preventDefault();
   console.log(tag_list);
   await axios
     .put(`${API_LINK_ITEMS_POSTFIX}/${id}`, {
       // ES15 syntax
+      user_id,
       title,
       body,
       tag_list,

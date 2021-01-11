@@ -5,11 +5,13 @@ import { API_LINK_ITEMS_POSTFIX } from "../api/API_LINK";
 import "./CSS/NewItem.css";
 import { markCompletion, deleteEntry, onFormEdit, onFormSubmit } from "../api/API_CRUD";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const NewItem = ({ match }) => {
   // Title and body can be converted 1 state, but flattened so as to prevent double re-rendering.
   const [titleState, setTitle] = useState("");
   const [bodyState, setBody] = useState("");
+  const userID = useSelector((state) => state.IDState);
 
   // The tagInputBar requires 2 states to work.
   const [tagState, setTags] = useState([]);
@@ -66,8 +68,8 @@ const NewItem = ({ match }) => {
       <form
         onSubmit={(event) =>
           isNewItem()
-            ? onFormSubmit(event, titleState, bodyState, currentTag.toString(), match, history)
-            : onFormEdit(event, match.params.id, titleState, bodyState, currentTag.toString(), match, history)
+            ? onFormSubmit(event, userID, titleState, bodyState, currentTag.toString(), match, history)
+            : onFormEdit(event, userID, match.params.id, titleState, bodyState, currentTag.toString(), match, history)
         }
       >
         <h1> {isNewItem() ? "Create new item!" : "Edit item!"} </h1>

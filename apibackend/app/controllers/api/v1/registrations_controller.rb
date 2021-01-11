@@ -6,6 +6,7 @@ module Api
                 # Attempts to create 
                 user = User.create!(
                     email: params['user']['email'],
+                    name: params['user']['name'],
                     password: params['user']['password'],
                     password_confirmation: params['user']['password_confirmation']
                 )
