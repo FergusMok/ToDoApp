@@ -6,10 +6,11 @@ Rails.application.routes.draw do
       get :logged_in, to: "sessions#logged_in"
       get "/specialshow" => "sessions#showOnlyUserItems"
       resources :registrations, only: [:create]
-      resources :items
+      #Took out show for security reasons
+      resources :items, only: [:index, :create, :update, :destroy] 
       resources :taggings
-      get "/completed" => "items#showCompletedTags"
-      get "/incomplete" => "items#showIncompletedTags"
+      #get "/completed" => "items#showCompletedTags"
+      #get "/incomplete" => "items#showIncompletedTags"
     end
   end
 end
