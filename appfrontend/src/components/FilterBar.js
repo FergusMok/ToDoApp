@@ -80,7 +80,7 @@ const FilterBar = ({ match }) => {
         </Grid.Column>
         <Grid.Column>
           <Dropdown
-            placeholder="Sort by due date"
+            placeholder="Filter by due date"
             fluid
             selection
             clearable

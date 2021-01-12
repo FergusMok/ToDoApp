@@ -5,6 +5,9 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
+#Same Site None
+Rails.application.config.action_dispatch.cookies_same_site_protection = :none
+
 Rails.application.config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
   allow do
     origins "https://fergus-cvwo.netlify.app"
