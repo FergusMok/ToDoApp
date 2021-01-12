@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       get "/specialshow" => "sessions#showOnlyUserItems"
       resources :registrations, only: [:create]
       #Took out show for security reasons
-      resources :items, only: [:index, :create, :update, :destroy] 
+      resources :items, only: [:show, :create, :update, :destroy] 
       resources :taggings
       #get "/completed" => "items#showCompletedTags"
       #get "/incomplete" => "items#showIncompletedTags"
