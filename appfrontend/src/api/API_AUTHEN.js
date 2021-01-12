@@ -17,17 +17,20 @@ const isLoggedIn = async () => {
       return false;
     }
   } catch (err) {
-    console.log(err);
+    console.log(err, `${API_LINK}logged_in`);
   }
 };
 
 const logOut = (history) => {
-  axios.delete(`${API_LINK}logout`, { withCredentials: true }).then((response) => {
-    console.log("You logged me out", response);
-    store.dispatch(removeID());
-    store.dispatch(removeName());
-    history.push("/");
-  });
+  axios
+    .delete(`${API_LINK}logout`, { withCredentials: true })
+    .then((response) => {
+      console.log("You logged me out", response);
+      store.dispatch(removeID());
+      store.dispatch(removeName());
+      history.push("/");
+    })
+    .catch((err) => console.log("logout", `${API_LINK}logout`));
 };
 
 const onFormSubmitLogin = (event, history, setMessage, setVisible, email, password) => {
@@ -53,7 +56,7 @@ const onFormSubmitLogin = (event, history, setMessage, setVisible, email, passwo
         return false;
       }
     })
-    .catch((error) => {});
+    .catch((error) => console.log("Login", error, `${API_LINK}logout`));
 };
 
 const onFormSubmitRegister = (event, history, setMessage, setVisible, email, password, passwordConfirmation, name) => {
@@ -83,6 +86,7 @@ const onFormSubmitRegister = (event, history, setMessage, setVisible, email, pas
       .catch((error) => {
         setMessage("Invalid email and/or password!");
         setVisible(true);
+        console.log("Register", error);
       });
   }
 };
