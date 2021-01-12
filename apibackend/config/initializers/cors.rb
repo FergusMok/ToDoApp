@@ -7,16 +7,17 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "http://localhost:3000"
+    origins "https://fergus-cvwo.netlify.app/"
     resource "*", headers: :any, 
     methods: [:get, :post, :put, :patch, :delete, :options, :head], 
     credentials: true
   end
 
   allow do
-    origins "https://fergus-cvwo.netlify.app/"
+    origins "http://localhost:3000"
     resource "*", headers: :any, 
-    methods: [:get, :post, :put, :patch, :delete, :options, :head], 
+    methods: [:get, :post, :put, :patch, :delete], 
     credentials: true
   end
+
 end
