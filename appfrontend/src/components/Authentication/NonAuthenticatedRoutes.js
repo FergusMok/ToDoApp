@@ -16,7 +16,7 @@ const NonAuthenticatedRoutes = ({ component: Component, ...rest }) => {
   }, []);
 
   const renderAuthenticatedPage = loading ? (
-    <> SPIN SPIN SPIN! </>
+    <LoadSpinner text="Checking if logged in..." />
   ) : (
     <Route render={(props) => (loggedIn ? <Redirect to="/incomplete" /> : <Component match={rest.computedMatch} />)} />
   );

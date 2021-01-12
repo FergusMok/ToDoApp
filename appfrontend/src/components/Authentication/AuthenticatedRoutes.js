@@ -18,7 +18,7 @@ const AuthenticatedRoutes = ({ component: Component, ...rest }) => {
   }, []);
 
   const renderAuthenticatedPage = loading ? (
-    <LoadSpinner name="Authenticating..." />
+    <LoadSpinner text="Authenticating..." />
   ) : (
     <Route
       render={(props) =>
