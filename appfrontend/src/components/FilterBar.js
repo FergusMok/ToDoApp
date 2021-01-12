@@ -1,28 +1,31 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Component } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTag } from "../redux/tagFilter";
-import {
-  Dropdown,
-  Button,
-  Container,
-  Grid,
-  Header,
-  Icon,
-  Image,
-  Item,
-  Label,
-  Menu,
-  Segment,
-  Step,
-  Table,
-} from "semantic-ui-react";
+import { addTag } from "../redux/filterTag";
+import { Dropdown, Container, Grid, Segment } from "semantic-ui-react";
+import { sortByUpdateDate, sortByDueDate } from "../redux/sortType";
+import { filterDueDate, resetFilterDueDate } from "../redux/filterDueDate";
 
 const FilterBar = ({ match }) => {
   const currentDatabase = useSelector((state) => state.databaseState);
-  const [tagOptions, setTagOptions] = useState([]);
-  const currentTag = useSelector((state) => state.tagState);
-  const dispatch = useDispatch();
 
+  const [tagOptions, setTagOptions] = useState([]); // Tags require 2 states
+  const currentTag = useSelector((state) => state.tagState);
+
+  const filterDueDateState = useSelector((state) => state.dueDateState); // Default is an empty string.
+  console.log(filterDueDateState);
+  const filterOptions = [
+    { key: "one", text: "Filter due in a day", value: 1 },
+    { key: "three", text: "Filter due in 3 days", value: 3 },
+    { key: "seven", text: "Filter due in a week", value: 7 },
+  ];
+
+  const isSortingByUpdateDate = useSelector((state) => state.sortState);
+  const sortOptions = [
+    { key: "SORTBYDUEDATE", text: "Sort by due date", value: false },
+    { key: "SORTBYUPDATE", text: "Sort by update date", value: true },
+  ];
+
+  const dispatch = useDispatch();
   const isCompleted = useCallback(() => match.path === "/completed", [match]);
 
   useEffect(() => {
@@ -52,7 +55,18 @@ const FilterBar = ({ match }) => {
 
   return (
     <Container>
-      <Grid columns={1} stackable>
+      <Grid columns={3} stackable>
+        <Grid.Column>
+          <Dropdown
+            placeholder="Sort based on"
+            fluid
+            selection
+            options={sortOptions}
+            //defaultValue="Sort by due date" This thing is not working
+            onChange={(event, { value }) => (value ? dispatch(sortByUpdateDate()) : dispatch(sortByDueDate()))}
+          />
+        </Grid.Column>
+
         <Grid.Column>
           <Dropdown
             placeholder="Filter by Tags"
@@ -63,6 +77,18 @@ const FilterBar = ({ match }) => {
             value={currentTag}
             onChange={(event, { value }) => {
               dispatch(addTag(value));
+            }}
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <Dropdown
+            placeholder="Sort by due date"
+            fluid
+            selection
+            clearable
+            options={filterOptions}
+            onChange={(event, { value }) => {
+              value ? dispatch(filterDueDate(value)) : dispatch(resetFilterDueDate());
             }}
           />
         </Grid.Column>

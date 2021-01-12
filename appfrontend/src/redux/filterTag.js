@@ -7,22 +7,13 @@ const addTag = (tag) => {
   };
 };
 
-const removeTag = (tag) => {
-  return {
-    type: "REOMVETAGTOFILTER",
-    payload: tag,
-  };
-};
-
 const tagReducer = (state = [], action) => {
   switch (action.type) {
     case "ADDTAGTOFILTER":
-      return action.payload;
-    case "REOMVETAGTOFILTER":
       return action.payload;
     default:
       return state;
   }
 };
 
-export { addTag, removeTag, tagReducer };
+export { addTag, tagReducer };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { isLoggedIn } from "../../api/API_AUTHEN";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import LoadSpinner from "../LoadSpinner";
 import NavigationBar from "../NavigationBar";
 

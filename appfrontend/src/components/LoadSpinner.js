@@ -3,11 +3,9 @@ import { Dimmer, Loader, Image, Segment } from "semantic-ui-react";
 
 const LoadSpinner = ({ text }) => {
   return (
-    <Segment style={{ height: "100vh" }}>
-      <Dimmer active>
-        <Loader content={text} />
-      </Dimmer>
-    </Segment>
+    <Dimmer active style={{ height: "100vh" }}>
+      <Loader content={text} />
+    </Dimmer>
   );
 };
 

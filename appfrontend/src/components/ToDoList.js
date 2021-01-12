@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { XMasonry, XBlock } from "react-xmasonry";
 import ToDoItem from "./ToDoCard";
 import { getDatabase } from "../api/API_CRUD";
@@ -12,6 +12,8 @@ const ToDoList = ({ match }) => {
   const activated = useSelector((state) => state.navigationState);
   const currentDatabase = useSelector((state) => state.databaseState);
   const currentTag = useSelector((state) => state.tagState);
+  const isSortingByUpdateDate = useSelector((state) => state.sortState);
+  const filterDueDateDaysBy = useSelector((state) => state.dueDateState);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,11 +39,39 @@ const ToDoList = ({ match }) => {
       return true;
     }
   };
+  const filterBasedOnDueDate = (jsonObject) => {
+    if (!filterDueDateDaysBy) {
+      return true;
+    } else {
+      if (jsonObject.due_date) {
+        const today = new Date();
+        return today.setDate(today.getDate() + filterDueDateDaysBy) - new Date(jsonObject.due_date) >= 0;
+      }
+      return false;
+    }
+  };
 
+  // Comparators
+  const sortBasedOnUpdate = (a, b) => {
+    console.log(new Date(b.updated_at) - new Date(a.updated_at));
+    return new Date(b.updated_at) - new Date(a.updated_at);
+  };
+  const sortBasedOnDueDate = (a, b) => {
+    if (a.due_date === b.due_date) {
+      return 0;
+    } else if (a.due_date === null) {
+      return 1;
+    } else if (b.due_date === null) {
+      return -1;
+    } else {
+      return new Date(a.due_date) - new Date(b.due_date);
+    }
+  };
   // This has very high complexity, may bottleneck here.
   const renderDatabase = currentDatabase
     .filter((x) => filterBasedOnTag(x))
-    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+    .filter((x) => filterBasedOnDueDate(x))
+    .sort((a, b) => (isSortingByUpdateDate ? sortBasedOnUpdate(a, b) : sortBasedOnDueDate(a, b)))
     .map((jsonObject) => {
       return (
         <XBlock key={jsonObject.id}>
@@ -54,7 +84,11 @@ const ToDoList = ({ match }) => {
 
   // If renderDatabase is loading, we'll need buffer some things first right
   const displayDatabase = useCallback(() => {
-    return <XMasonry maxColumns={4}>{renderDatabase}</XMasonry>;
+    return (
+      <XMasonry style={{ marginTop: "5vh" }} maxColumns={4}>
+        {renderDatabase}
+      </XMasonry>
+    );
   }, [currentTag, renderDatabase]);
 
   return loading ? <LoadSpinner text="Loading data.." /> : displayDatabase();

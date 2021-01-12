@@ -23,7 +23,6 @@ const NavigationBar = () => {
   });
 
   const fixed = false;
-  console.log(name);
   return (
     <Sticky>
       <div style={{ backgroundColor: "black" }}>
@@ -59,14 +58,7 @@ const NavigationBar = () => {
             </Link>
 
             <Menu.Item position="right">
-              <Button
-                as="a"
-                inverted={!fixed}
-                style={{ marginLeft: "2vh" }}
-                onClick={() => {
-                  logOut(history);
-                }}
-              >
+              <Button as="a" inverted={!fixed} style={{ marginLeft: "2vh" }} onClick={() => logOut(history)}>
                 Log Out
               </Button>
             </Menu.Item>

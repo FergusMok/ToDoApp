@@ -46,14 +46,15 @@ const deleteEntry = async (id) => {
 };
 
 // Completed defaulted to be false
-const onFormSubmit = async (event, user_id, title, body, tag_list, match, history) => {
+const onFormSubmit = async (event, user_id, title, body, tag_list, calendarDate, match, history) => {
   event.preventDefault();
-  console.log("userid, title, body, tag_list", user_id, title, body, tag_list);
+  const due_date = calendarDate ? calendarDate.toString() : null;
   await axios
     .post(API_LINK_ITEMS_POSTFIX, {
       user_id,
       title,
       body,
+      due_date,
       tag_list,
     })
     .then((resp) => {
@@ -63,14 +64,16 @@ const onFormSubmit = async (event, user_id, title, body, tag_list, match, histor
   redirect(match, history);
 };
 
-const onFormEdit = async (event, user_id, id, title, body, tag_list, match, history) => {
+const onFormEdit = async (event, user_id, id, title, body, tag_list, calendarDate, match, history) => {
   event.preventDefault();
+  const due_date = calendarDate ? calendarDate.toString() : null;
   await axios
     .put(`${API_LINK_ITEMS_POSTFIX}/${id}`, {
       // ES15 syntax
       user_id,
       title,
       body,
+      due_date,
       tag_list,
     })
     .then((resp) => {

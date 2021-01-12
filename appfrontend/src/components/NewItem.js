@@ -6,6 +6,9 @@ import "./CSS/NewItem.css";
 import { markCompletion, deleteEntry, onFormEdit, onFormSubmit } from "../api/API_CRUD";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+import "react-datetime/css/react-datetime.css";
+import Datetime from "react-datetime";
+import moment from "moment";
 
 const NewItem = ({ match }) => {
   // Title and body can be converted 1 state, but flattened so as to prevent double re-rendering.
@@ -21,6 +24,14 @@ const NewItem = ({ match }) => {
   const isNewItem = useCallback(() => match.path === "/create", [match]);
   const isCompleted = useCallback(() => match.path === "/completed/:id", [match]);
 
+  // Calendar-related var
+  var inputProps = { placeholder: "Due date" };
+  const [calendarDate, setCalendarDate] = useState(""); // Returns as a date-time object
+  var yesterday = moment().subtract(1, "day");
+  var valid = function (current) {
+    return current.isAfter(yesterday);
+  };
+
   useEffect(() => {
     // Fills up the form for put request.
     const refreshArticle = async () => {
@@ -35,12 +46,15 @@ const NewItem = ({ match }) => {
             return newObj;
           })
         );
+        console.log("Tried setting the data");
+        setCalendarDate(new Date(itemDetails.data.data.due_date));
         setCurrentTag(itemDetails.data.data.tag_list);
       } else {
         // Resets state, if user changes from edit to create via navBar.
         setTitle("");
         setBody("");
         setTags("");
+        setCalendarDate("");
       }
     };
     refreshArticle();
@@ -53,8 +67,8 @@ const NewItem = ({ match }) => {
   ) : (
     <button onClick={() => deleteEntry(match.params.id, match)}> {"Delete"} </button>
   );
-  // Double ternary
-  const completeIncompleteButton = isNewItem() ? (
+
+  const completeIncompleteButton = isNewItem() ? ( // Double ternary
     <></>
   ) : isCompleted() ? (
     <button onClick={() => markCompletion(match.params.id, true)}>{"Mark as Incomplete"}</button>
@@ -65,10 +79,21 @@ const NewItem = ({ match }) => {
   return (
     <div className="NewItemBody">
       <form
+        className="NewItemform"
         onSubmit={(event) =>
           isNewItem()
-            ? onFormSubmit(event, userID, titleState, bodyState, currentTag.toString(), match, history)
-            : onFormEdit(event, userID, match.params.id, titleState, bodyState, currentTag.toString(), match, history)
+            ? onFormSubmit(event, userID, titleState, bodyState, currentTag.toString(), calendarDate, match, history)
+            : onFormEdit(
+                event,
+                userID,
+                match.params.id,
+                titleState,
+                bodyState,
+                currentTag.toString(),
+                calendarDate,
+                match,
+                history
+              )
         }
       >
         <h1> {isNewItem() ? "Create new item!" : "Edit item!"} </h1>
@@ -94,6 +119,17 @@ const NewItem = ({ match }) => {
             placeholder="Item Body, e.g Remember to book tickets to Hawaii"
           />
         </label>
+        <Datetime
+          dateFormat="YYYY-MM-DD"
+          timeFormat={false}
+          onChange={(e) => {
+            setCalendarDate(e._d);
+          }}
+          closeOnSelect
+          isValidDate={valid}
+          inputProps={inputProps}
+          value={isNewItem() ? null : new Date(calendarDate)}
+        />
         <Dropdown
           options={tagState}
           placeholder="Tags!"

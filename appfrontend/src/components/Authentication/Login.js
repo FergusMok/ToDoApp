@@ -61,8 +61,9 @@ const Login = ({ match }) => {
   );
 
   return (
-    <div className="NewItemBody">
+    <div className="NewItemBodyNonAuthenticated">
       <form
+        className="NewItemform"
         onSubmit={(event) =>
           isLogin
             ? onFormSubmitLogin(event, history, setMessage, setVisible, email, password)
