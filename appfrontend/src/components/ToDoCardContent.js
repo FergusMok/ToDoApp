@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Label } from "semantic-ui-react";
-import { addTag, removeTag, tagReducer } from "../redux/filterTag";
+import { addTag } from "../redux/filterTag";
 import { useSelector } from "react-redux";
 
 const ToDoCard = ({ item }) => {

@@ -1,18 +1,15 @@
-import React from "react";
-import { API_LINK, API_LINK_ITEMS_POSTFIX } from "./API_LINK";
+import { API_LINK_ITEMS_POSTFIX, API_LINK_USERSHOW_POSTFIX } from "./API_LINK";
 import axios from "axios";
 import { change_db } from "../redux/database";
 import { store } from "../redux/combineReducers";
 
 // Get completed or incompleted
 const getDatabase = (isCompleted) => {
-  const database = axios
-    .get("http://localhost:5000/api/v1/specialshow", { withCredentials: true })
+  axios
+    .get(API_LINK_USERSHOW_POSTFIX, { withCredentials: true })
     .then((resp) => store.dispatch(change_db(resp.data.data.filter((item) => item.completed === isCompleted))))
     .catch((errors) => console.log(errors));
 };
-
-// I split the tags because it's much faster (hypothetically half), especially if we have alot of tags.
 
 const markCompletion = async (id, isCompleted) => {
   // Put request to mark complete
@@ -29,7 +26,6 @@ const markCompletion = async (id, isCompleted) => {
 
 const redirect = (match, history) => {
   // Redirect once CRUD operaton is done.
-  const isNewItem = match.path === "/create";
   const isCompleted = match.path === "/completed/:id";
   if (isCompleted) {
     // Complete will route back to complete

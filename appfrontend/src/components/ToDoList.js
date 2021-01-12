@@ -53,7 +53,6 @@ const ToDoList = ({ match }) => {
 
   // Comparators
   const sortBasedOnUpdate = (a, b) => {
-    console.log(new Date(b.updated_at) - new Date(a.updated_at));
     return new Date(b.updated_at) - new Date(a.updated_at);
   };
   const sortBasedOnDueDate = (a, b) => {

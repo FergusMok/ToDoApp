@@ -7,7 +7,6 @@ import AuthenticatedRoutes from "./Authentication/AuthenticatedRoutes";
 import NonAuthenticatedRoutes from "./Authentication/NonAuthenticatedRoutes";
 import NotFoundPage from "./Authentication/NotFoundPage";
 import Welcome from "./WelcomePage.js";
-import LoadSpinner from "./LoadSpinner";
 
 const App = () => {
   return (

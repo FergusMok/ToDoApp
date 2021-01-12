@@ -15,10 +15,8 @@ const sortByUpdateDate = () => {
 const sortReducer = (state = false, action) => {
   switch (action.type) {
     case "SORTBYDUEDATE":
-      console.log("Sort by due, so false");
       return action.payload;
     case "SORTBYUPDATEDATE":
-      console.log("Sort by update, so true");
       return action.payload;
     default:
       return state;

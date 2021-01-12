@@ -1,8 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import { Message } from "semantic-ui-react";
 import "../CSS/NewItem.css";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { onFormSubmitLogin, onFormSubmitRegister } from "../../api/API_AUTHEN";
 import { Button, Icon } from "semantic-ui-react";

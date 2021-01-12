@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, Component } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTag } from "../redux/filterTag";
-import { Dropdown, Container, Grid, Segment } from "semantic-ui-react";
+import { Dropdown, Container, Grid } from "semantic-ui-react";
 import { sortByUpdateDate, sortByDueDate } from "../redux/sortType";
 import { filterDueDate, resetFilterDueDate } from "../redux/filterDueDate";
 
@@ -12,14 +12,12 @@ const FilterBar = ({ match }) => {
   const currentTag = useSelector((state) => state.tagState);
 
   const filterDueDateState = useSelector((state) => state.dueDateState); // Default is an empty string.
-  console.log(filterDueDateState);
   const filterOptions = [
     { key: "one", text: "Filter due in a day", value: 1 },
     { key: "three", text: "Filter due in 3 days", value: 3 },
     { key: "seven", text: "Filter due in a week", value: 7 },
   ];
 
-  const isSortingByUpdateDate = useSelector((state) => state.sortState);
   const sortOptions = [
     { key: "SORTBYDUEDATE", text: "Sort by due date", value: false },
     { key: "SORTBYUPDATE", text: "Sort by update date", value: true },

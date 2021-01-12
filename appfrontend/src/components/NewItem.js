@@ -46,7 +46,6 @@ const NewItem = ({ match }) => {
             return newObj;
           })
         );
-        console.log("Tried setting the data");
         setCalendarDate(new Date(itemDetails.data.data.due_date));
         setCurrentTag(itemDetails.data.data.tag_list);
       } else {

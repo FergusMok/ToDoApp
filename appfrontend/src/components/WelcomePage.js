@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import { Button, Container, Header, Icon, Menu, Segment } from "semantic-ui-react";
-import { Link, useHistory } from "react-router-dom";
+import React from "react";
+import { Button, Container, Header, Segment } from "semantic-ui-react";
+import { useHistory } from "react-router-dom";
 
 const WelcomePage = () => {
   const history = useHistory();
-  const fixed = false;
 
   return (
     <>

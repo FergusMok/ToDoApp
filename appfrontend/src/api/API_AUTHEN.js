@@ -1,4 +1,4 @@
-import { API_LINK_ITEMS_POSTFIX } from "./API_LINK";
+import { API_LINK_SESSIONS_POSTFIX, API_LINK_REGISTRATIONS_POSTFIX } from "./API_LINK";
 import { API_LINK } from "./API_LINK";
 import { addName, removeName } from "../redux/userName";
 import { addID, removeID } from "../redux/userID";
@@ -34,7 +34,7 @@ const onFormSubmitLogin = (event, history, setMessage, setVisible, email, passwo
   event.preventDefault();
   axios
     .post(
-      "http://localhost:5000/api/v1/sessions",
+      API_LINK_SESSIONS_POSTFIX,
       {
         user: {
           email: email.toLowerCase(),
@@ -64,7 +64,7 @@ const onFormSubmitRegister = (event, history, setMessage, setVisible, email, pas
   } else {
     axios
       .post(
-        "http://localhost:5000/api/v1/registrations",
+        API_LINK_REGISTRATIONS_POSTFIX,
         {
           user: {
             email: email.toLowerCase(),
