@@ -1,30 +1,39 @@
-import React from "react";
-import { Card, Label } from "semantic-ui-react";
-import { addTag, removeTag, tagReducer } from "../redux/tagFilter";
-import "./CSS/ToDoCard.css";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { Dimmer } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import ToDoCard from "./ToDoCardContent";
+import "./CSS/ToDoItem.css";
+import { markCompletion } from "../api/API_CRUD";
 
-const ToDoCard = ({ item }) => {
-  const tags = item.tag_list.map((tag) => (
-    <Label onClick={() => addTag(tag)} key={tag}>
-      {tag}
-    </Label>
-  ));
+const ToDoItem = ({ item }) => {
+  const [active, setActive] = useState(false);
+  const handleShow = () => setActive(true);
+  const handleHide = () => setActive(false);
+  const isCompleted = () => item.completed;
+  const isCompletedButtonText = isCompleted() ? "Incomplete" : "Complete";
 
   return (
-    <>
-      <Card>
-        <Card.Content
-          header={item.title}
-          style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word" }}
-          className="CardHeader"
-        />
-        <Card.Content meta={`Updated: ${new Date(item.updated_at).toString().substr(4, 17)} `} className="CardMeta" />
-        <Card.Content description={item.body} style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word" }} />
-        <Card.Content extra> {tags} </Card.Content>
-      </Card>
-    </>
+    <div onMouseEnter={handleShow} onMouseLeave={handleHide}>
+      <Dimmer.Dimmable blurring dimmed={active}>
+        <Dimmer active={active} inverted onClickOutside={handleHide} />
+        <ToDoCard item={item} />
+        <Dimmer
+          active={active}
+          onClickOutside={handleHide}
+          verticalAlign="centre"
+          // This will throw a warning. Semantic enum-ed arg as top or botom only.
+        >
+          <Link to={isCompleted() ? `/completed/${item.id}` : `/incomplete/${item.id}`}>
+            <button> Edit </button>
+          </Link>
+          <button type="button" onClick={() => markCompletion(item.id, isCompleted())}>
+            {" "}
+            Mark as {isCompletedButtonText}{" "}
+          </button>
+        </Dimmer>
+      </Dimmer.Dimmable>
+    </div>
   );
 };
 
-export default ToDoCard;
+export default ToDoItem;

@@ -1,20 +1,27 @@
-import React, { useCallback, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { XMasonry, XBlock } from "react-xmasonry";
-
-import ToDoItem from "./ToDoItem";
+import ToDoItem from "./ToDoCard";
 import { getDatabase } from "../api/API_CRUD";
 import "./CSS/ToDoList.css";
+import LoadSpinner from "./LoadSpinner";
+import { change_db } from "../redux/database";
+import { store } from "../redux/combineReducers";
 
 const ToDoList = ({ match }) => {
   const activated = useSelector((state) => state.navigationState);
   const currentDatabase = useSelector((state) => state.databaseState);
   const currentTag = useSelector((state) => state.tagState);
-
-  console.log(match.path);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getDatabase(match.path !== "/incomplete");
+    store.dispatch(change_db([]));
+    setLoading(true);
+    const databaseFn = async () => {
+      await getDatabase(match.path !== "/incomplete");
+      setLoading(false);
+    };
+    databaseFn();
   }, [activated]);
 
   const filterBasedOnTag = (jsonObject) => {
@@ -47,14 +54,10 @@ const ToDoList = ({ match }) => {
 
   // If renderDatabase is loading, we'll need buffer some things first right
   const displayDatabase = useCallback(() => {
-    if (renderDatabase !== []) {
-      return <XMasonry maxColumns={4}>{renderDatabase}</XMasonry>;
-    } else {
-      return <div>"LOADING..."</div>;
-    }
+    return <XMasonry maxColumns={4}>{renderDatabase}</XMasonry>;
   }, [currentTag, renderDatabase]);
 
-  return displayDatabase();
+  return loading ? <LoadSpinner text="Loading data.." /> : displayDatabase();
 };
 
 export default ToDoList;

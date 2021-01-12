@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import NavigationBar from "./NavigationBar";
 import NewItem from "./NewItem";
 import HomePage from "./HomePage";
 import Login from "./Authentication/Login";
@@ -9,12 +8,12 @@ import NonAuthenticatedRoutes from "./Authentication/NonAuthenticatedRoutes";
 import NotFoundPage from "./Authentication/NotFoundPage";
 import Welcome from "./WelcomePage.js";
 import TestingPage from "./TestingPage.js";
+import LoadSpinner from "./LoadSpinner";
 
 const App = () => {
   return (
     <>
       <Router>
-        <NavigationBar />
         <Switch>
           {/* If not logged in, then immediately redirect to login page*/}
           <AuthenticatedRoutes path="/incomplete" exact component={HomePage} />
@@ -28,6 +27,8 @@ const App = () => {
           <NonAuthenticatedRoutes path="/register" exact component={Login} />
           {/* Accessible regardless of login status */}
           <Route path="/" exact component={Welcome} />
+          <Route path="/authen" exact component={LoadSpinner} />
+
           <Route path="/:someURL" component={NotFoundPage} />
 
           <Route path="/testingpage2" exact component={TestingPage} />
