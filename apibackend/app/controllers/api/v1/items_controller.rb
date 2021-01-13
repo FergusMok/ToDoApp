@@ -52,6 +52,13 @@ module Api
                 render json: {status: 'Sucessful!', message:"Successfully showed all incompleted items", data: @items}, status: :ok
             end
 
+            def emailUsers
+                User.find_each do |user|
+                    UserMailer.due_date_chaser(user).deliver_now
+                end
+                render json: {status: 'Sucessful!', message:"Emailed myself"}, status: :ok
+            end
+
             private
             def items_params
                 return params.require(:item).permit(:title, :body, :completed, :user_id, :tag_list, :due_date)

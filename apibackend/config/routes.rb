@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       #Took out show for security reasons
       resources :items, only: [:show, :create, :update, :destroy] 
       resources :taggings
+      get "/emailUsers" => "items#emailUsers"
       #get "/completed" => "items#showCompletedTags"
       #get "/incomplete" => "items#showIncompletedTags"
     end

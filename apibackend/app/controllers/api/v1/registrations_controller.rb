@@ -10,7 +10,7 @@ module Api
                     password: params['user']['password'],
                     password_confirmation: params['user']['password_confirmation']
                 )
-            # If passed the validations and created User 
+            # If passed the validations and created User
             if user
                 session[:user_id] = user.id
                 render json: {

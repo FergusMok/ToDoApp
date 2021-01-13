@@ -10,7 +10,10 @@ const WelcomePage = () => {
       <Segment inverted textAlign="center" style={{ height: "100vh", padding: "1em 0em" }} vertical>
         <Container></Container>
         <Container text>
-          <Header
+          <p style={{ color: "whie", fontSize: "5em", fontWeight: "bold", marginBottom: 0, marginTop: "3em" }}>
+            To Do Application
+          </p>
+          {/*           <Header
             as="h1"
             content="To Do Application!"
             inverted
@@ -21,6 +24,7 @@ const WelcomePage = () => {
               marginTop: "3em",
             }}
           />
+          */}
           <Header
             as="h2"
             content="Do whatever you want when you want to."

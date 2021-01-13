@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import "react-datetime/css/react-datetime.css";
 import Datetime from "react-datetime";
 import moment from "moment";
+import LoadSpinner from "./LoadSpinner";
 
 const NewItem = ({ match }) => {
   // Title and body can be converted 1 state, but flattened so as to prevent double re-rendering.
@@ -19,6 +20,10 @@ const NewItem = ({ match }) => {
   // The tagInputBar requires 2 states to work.
   const [tagState, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState([]);
+
+  //
+  const loadingtext = "Fetching your information..";
+  const [loading, setLoading] = useState(true);
 
   const history = useHistory();
   const isNewItem = useCallback(() => match.path === "/create", [match]);
@@ -46,8 +51,14 @@ const NewItem = ({ match }) => {
             return newObj;
           })
         );
-        setCalendarDate(new Date(itemDetails.data.data.due_date));
+        if (itemDetails.data.data.due_date) {
+          console.log(itemDetails.data.data.due_date);
+          setCalendarDate(new Date(itemDetails.data.data.due_date));
+        } else {
+          // Leave it default ""
+        }
         setCurrentTag(itemDetails.data.data.tag_list);
+        setLoading(false);
       } else {
         // Resets state, if user changes from edit to create via navBar.
         setTitle("");
@@ -75,7 +86,11 @@ const NewItem = ({ match }) => {
     <button onClick={() => markCompletion(match.params.id, false)}>{"Mark as Complete"}</button>
   );
 
-  return (
+  // If is a new item, render immediately
+  // If is an existing item, must wait to load, then return.
+  return !isNewItem() && loading ? (
+    <LoadSpinner text={loadingtext} />
+  ) : (
     <div className="NewItemBody">
       <form
         className="NewItemform"
@@ -104,7 +119,7 @@ const NewItem = ({ match }) => {
             required
             minLength="3"
             maxLength="27"
-            placeholder="Item Title, e.g Go surfing at 6pm"
+            placeholder="Item Title, e.g Go    at 6pm"
           />
         </label>
         <label>
@@ -127,7 +142,9 @@ const NewItem = ({ match }) => {
           closeOnSelect
           isValidDate={valid}
           inputProps={inputProps}
-          value={isNewItem() ? null : new Date(calendarDate)}
+          // If the calendarDate or isNewItem is empty, then it should be displayed as null
+          // apparently calendarDate by itself as "" does not evaluate to "" here.
+          value={isNewItem() || calendarDate === "" ? null : new Date(calendarDate)}
         />
         <Dropdown
           options={tagState}

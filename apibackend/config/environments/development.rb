@@ -31,6 +31,17 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'example.com', # No need to specify this, since we're using gmail
+    user_name:            'FergusNetlify@gmail.com',
+    password:             'hYYmgFtimIlzuZnvBjQxVrsWUC51RreY5ucyjcHYKICTAiMiNDj6ffcMWRgxfw5a',
+    authentication:       'plain',
+    enable_starttls_auto: true }
+
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
