@@ -119,7 +119,7 @@ const NewItem = ({ match }) => {
             required
             minLength="3"
             maxLength="27"
-            placeholder="Item Title, e.g Go    at 6pm"
+            placeholder="Item Title, e.g Go fishing at 6pm"
           />
         </label>
         <label>

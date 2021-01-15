@@ -35,10 +35,11 @@ const FilterBar = ({ match }) => {
           currentDatabase
             .filter((jsonObject) => jsonObject.completed === isCompleted() && jsonObject.tag_list.length > 0)
             .map((jsonObject) => jsonObject.tag_list)
+            .flat()
         ),
       ];
       setTagOptions(
-        tagsList.flat().map((tag) => {
+        tagsList.map((tag) => {
           const newObj = { key: tag, text: tag, value: tag };
           return newObj;
         })
@@ -48,7 +49,8 @@ const FilterBar = ({ match }) => {
   }, [currentDatabase]);
 
   useEffect(() => {
-    dispatch(addTag([])); // Reset the dropdown animation when change to a new page
+    dispatch(addTag([]));
+    dispatch(resetFilterDueDate()); // Reset the dropdown animation when change to a new page
   }, [match]);
 
   return (
@@ -68,6 +70,7 @@ const FilterBar = ({ match }) => {
         <Grid.Column>
           <Dropdown
             placeholder="Filter by Tags"
+            clearable
             fluid
             multiple
             selection
