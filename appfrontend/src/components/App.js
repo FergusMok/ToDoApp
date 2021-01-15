@@ -7,6 +7,8 @@ import AuthenticatedRoutes from "./Authentication/AuthenticatedRoutes";
 import NonAuthenticatedRoutes from "./Authentication/NonAuthenticatedRoutes";
 import NotFoundPage from "./Authentication/NotFoundPage";
 import Welcome from "./WelcomePage.js";
+import Testing from "./Testing.js";
+import Email from "./Email.js";
 
 const App = () => {
   return (
@@ -24,6 +26,9 @@ const App = () => {
           <NonAuthenticatedRoutes path="/register" exact component={Login} />
           {/* Accessible regardless of login status */}
           <Route path="/" exact component={Welcome} />
+          <Route path="/testing" exact component={Testing} />
+          <Route path="/email" exact component={Email} />
+
           <Route path="/:someURL" component={NotFoundPage} />
         </Switch>
       </Router>
