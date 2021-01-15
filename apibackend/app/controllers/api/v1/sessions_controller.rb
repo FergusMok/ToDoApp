@@ -10,7 +10,6 @@ module Api
                   .find_by(email: params["user"]["email"])
                   # Bcrypt autheticate method, attempts to log in here.
                   .try(:authenticate, params["user"]["password"])
-          p user
           if user
             # Assign to rails session.
             session[:user_id] = user.id

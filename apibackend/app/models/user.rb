@@ -10,6 +10,7 @@ class User < ApplicationRecord
     def emailUsers
         User.find_each do |user|
             UserMailer.due_date_chaser(user).deliver_now
+        end
     end
 
 
