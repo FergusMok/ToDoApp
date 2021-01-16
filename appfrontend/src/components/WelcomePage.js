@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Container, Header, Segment } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import WelcomePageWord from "./WelcomePageWord";
 
 const WelcomePage = () => {
   const history = useHistory();
@@ -9,11 +10,13 @@ const WelcomePage = () => {
     <>
       <Segment inverted textAlign="center" style={{ height: "100vh", padding: "1em 0em" }} vertical>
         <Container></Container>
-        <Container text>
-          <p style={{ color: "white", fontSize: "5em", fontWeight: "bold", marginBottom: 0, marginTop: "3em" }}>
+        <Container text style={{ marginTop: "12em" }}>
+          <WelcomePageWord style={{ marginLeft: "auto", marginRight: "auto" }} />
+          {/*
+          <p style={{ color: "white", fontSize: "85px", fontWeight: "bold", marginBottom: 0, marginTop: "3em" }}>
             To Do Application
           </p>
-          {/*           <Header
+                    <Header
             as="h1"
             content="To Do Application!"
             inverted
