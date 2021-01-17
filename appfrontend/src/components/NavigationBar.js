@@ -18,9 +18,14 @@ const NavigationBar = () => {
   const location = useLocation();
 
   useEffect(() => {
+    dispatch(navigate(location.pathname.slice(1)));
+  }, []);
+
+  /*   useEffect(() => {
     dispatch(navigate(location.pathname.slice(1)), []);
   });
 
+ */
   const fixed = false;
   return (
     <Sticky>

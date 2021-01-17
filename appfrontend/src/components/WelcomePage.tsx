@@ -11,8 +11,8 @@ const WelcomePage = () => {
       <Segment inverted textAlign="center" style={{ height: "100vh", padding: "1em 0em" }} vertical>
         <Container></Container>
         <Container text style={{ marginTop: "12em" }}>
-          <WelcomePageWord style={{ marginLeft: "30vh", marginRight: "auto" }} />
-          {/*
+          <WelcomePageWord />
+          {/* Old Header, without any kind of animation. 
           <p style={{ color: "white", fontSize: "85px", fontWeight: "bold", marginBottom: 0, marginTop: "3em" }}>
             To Do Application
           </p>

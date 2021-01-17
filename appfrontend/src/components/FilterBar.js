@@ -4,6 +4,7 @@ import { addTag } from "../redux/filterTag";
 import { Dropdown, Container, Grid } from "semantic-ui-react";
 import { sortByUpdateDate, sortByDueDate } from "../redux/sortType";
 import { filterDueDate, resetFilterDueDate } from "../redux/filterDueDate";
+import { RouteComponentProps } from "react-router-dom";
 
 const FilterBar = ({ match }) => {
   const currentDatabase = useSelector((state) => state.databaseState);

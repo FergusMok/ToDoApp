@@ -1,5 +1,5 @@
 import React from "react";
-import ReactVivus from "react-vivus";
+import ReactVivus from "react-vivus"; // React-vivus does not have a @types on DefinitelyTyped.
 import SVG from "./WelcomePageWord.svg";
 import "./CSS/WelcomePageWord.css";
 const WelcomePageWord = () => {

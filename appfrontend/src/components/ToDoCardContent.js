@@ -2,7 +2,20 @@ import React from "react";
 import { Card, Label } from "semantic-ui-react";
 import { addTag } from "../redux/filterTag";
 import { useSelector } from "react-redux";
-
+/* interface ToDoCardProps {
+  item: {
+    id: number,
+    title: string,
+    body: string,
+    created_at: string,
+    updated_at: string,
+    completed: boolean,
+    user_id: number,
+    due_date: string,
+    tag_list: Array<String>,
+  };
+}
+ */
 const ToDoCard = ({ item }) => {
   const tags = item.tag_list.map((tag) => (
     <Label onClick={() => addTag(tag)} key={tag}>

@@ -5,7 +5,21 @@ import ToDoCard from "./ToDoCardContent";
 import "./CSS/ToDoItem.css";
 import { markCompletion } from "../api/API_CRUD";
 
-const ToDoItem = ({ item }) => {
+interface ToDoItemProps {
+  item: {
+    id: number;
+    title: string;
+    body: string;
+    created_at: string;
+    updated_at: string;
+    completed: boolean;
+    user_id: number;
+    due_date: string;
+    tag_list: Array<String>;
+  };
+}
+
+const ToDoItem = ({ item }: ToDoItemProps) => {
   const [active, setActive] = useState(false);
   const handleShow = () => setActive(true);
   const handleHide = () => setActive(false);
@@ -27,8 +41,7 @@ const ToDoItem = ({ item }) => {
             <button> Edit </button>
           </Link>
           <button type="button" onClick={() => markCompletion(item.id, isCompleted())}>
-            {" "}
-            Mark as {isCompletedButtonText}{" "}
+            Mark as {isCompletedButtonText}
           </button>
         </Dimmer>
       </Dimmer.Dimmable>
