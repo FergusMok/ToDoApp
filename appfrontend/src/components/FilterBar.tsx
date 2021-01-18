@@ -4,25 +4,37 @@ import { addTag } from "../redux/filterTag";
 import { Dropdown, Container, Grid } from "semantic-ui-react";
 import { sortByUpdateDate, sortByDueDate } from "../redux/sortType";
 import { filterDueDate, resetFilterDueDate } from "../redux/filterDueDate";
-import { RouteComponentProps } from "react-router-dom";
+import { RootState } from "../redux/combineReducers";
+
+interface tagOptionsObjectInterface {
+  key: string;
+  text: string;
+  value: string;
+}
+interface sortOptionObjectInterface {
+  key: string;
+  text: string;
+  value: boolean | string;
+}
 
 const FilterBar = ({ match }) => {
-  const currentDatabase = useSelector((state) => state.databaseState);
+  const currentDatabase = useSelector((state: RootState) => state.databaseState);
 
-  const [tagOptions, setTagOptions] = useState([]); // Tags require 2 states
-  const currentTag = useSelector((state) => state.tagState);
-
-  const filterDueDateState = useSelector((state) => state.dueDateState); // Default is an empty string.
   const filterOptions = [
     { key: "one", text: "Filter due in a day", value: 1 },
     { key: "three", text: "Filter due in 3 days", value: 3 },
     { key: "seven", text: "Filter due in a week", value: 7 },
   ];
+  const [tagOptions, setTagOptions] = useState<tagOptionsObjectInterface[]>([]); // Tags require 2 states
+  const currentTag = useSelector((state: RootState) => state.tagState);
 
   const sortOptions = [
+    // isSortByUpdate -> true or false?
     { key: "SORTBYDUEDATE", text: "Sort by due date", value: false },
     { key: "SORTBYUPDATE", text: "Sort by update date", value: true },
   ];
+  // This state is solely for animating. I didn't want redux to take in the whole object value returned by Semantic
+  const [DropdownSortText, setDropdownSortText] = useState<sortOptionObjectInterface>(sortOptions[0]);
 
   const dispatch = useDispatch();
   const isCompleted = useCallback(() => match.path === "/completed", [match]);
@@ -32,7 +44,7 @@ const FilterBar = ({ match }) => {
     const refreshFilterBar = () => {
       // Unique tagsList
       const tagsList = [
-        ...new Set(
+        ...new Set<string>(
           currentDatabase
             .filter((jsonObject) => jsonObject.completed === isCompleted() && jsonObject.tag_list.length > 0)
             .map((jsonObject) => jsonObject.tag_list)
@@ -41,7 +53,7 @@ const FilterBar = ({ match }) => {
       ];
       setTagOptions(
         tagsList.map((tag) => {
-          const newObj = { key: tag, text: tag, value: tag };
+          const newObj: tagOptionsObjectInterface = { key: tag, text: tag, value: tag };
           return newObj;
         })
       );
@@ -49,9 +61,12 @@ const FilterBar = ({ match }) => {
     refreshFilterBar();
   }, [currentDatabase]);
 
+  // Reset the dropdown animiations and states when changing to a new page.
   useEffect(() => {
     dispatch(addTag([]));
-    dispatch(resetFilterDueDate()); // Reset the dropdown animation when change to a new page
+    dispatch(resetFilterDueDate());
+    dispatch(sortByDueDate()); // Sort state
+    setDropdownSortText(sortOptions[0]); // Sort animation
   }, [match]);
 
   return (
@@ -59,12 +74,14 @@ const FilterBar = ({ match }) => {
       <Grid columns={3} stackable>
         <Grid.Column>
           <Dropdown
-            placeholder="Sort based on"
             fluid
             selection
             options={sortOptions}
-            //defaultValue="Sort by due date" This thing is not working
-            onChange={(event, { value }) => (value ? dispatch(sortByUpdateDate()) : dispatch(sortByDueDate()))}
+            value={DropdownSortText.value} // Im not sure how this works.
+            onChange={(event, { value }) => {
+              setDropdownSortText({ key: value as string, value: value as boolean, text: value as string });
+              value ? dispatch(sortByUpdateDate()) : dispatch(sortByDueDate());
+            }}
           />
         </Grid.Column>
 
@@ -90,6 +107,8 @@ const FilterBar = ({ match }) => {
             clearable
             options={filterOptions}
             onChange={(event, { value }) => {
+              console.log(value);
+              console.log(typeof value);
               value ? dispatch(filterDueDate(value)) : dispatch(resetFilterDueDate());
             }}
           />

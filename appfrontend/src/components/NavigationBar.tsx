@@ -5,12 +5,13 @@ import { Sticky } from "semantic-ui-react";
 import { navigate } from "../redux/NavigationBar";
 import { logOut } from "../api/API_AUTHEN";
 import { Button, Container, Menu } from "semantic-ui-react";
+import { RootState } from "../redux/combineReducers";
 
 const NavigationBar = () => {
   const dispatch = useDispatch();
   // Conditional Rendering...
-  const activated = useSelector((state) => state.navigationState);
-  const name = useSelector((state) => state.userNameState);
+  const activated = useSelector((state: RootState) => state.navigationState);
+  const name = useSelector((state: RootState) => state.userNameState);
   const incompleteBoo = "incomplete" === activated;
   const createBoo = "create" === activated;
   const completeBoo = "completed" === activated;
@@ -19,26 +20,13 @@ const NavigationBar = () => {
 
   useEffect(() => {
     dispatch(navigate(location.pathname.slice(1)));
-  }, []);
-
-  /*   useEffect(() => {
-    dispatch(navigate(location.pathname.slice(1)), []);
   });
 
- */
   const fixed = false;
   return (
     <Sticky>
       <div style={{ backgroundColor: "black" }}>
-        <Menu
-          backgroundColor="black"
-          color="black"
-          fixed={fixed ? "top" : null}
-          inverted={!fixed}
-          pointing={!fixed}
-          secondary={!fixed}
-          size="huge"
-        >
+        <Menu backgroundColor="black" color="black" inverted={!fixed} pointing={!fixed} secondary={!fixed} size="huge">
           <Menu.Item as="a" style={{ marginBottom: "0.6vh" }}>
             {name}
           </Menu.Item>

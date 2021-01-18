@@ -18,4 +18,6 @@ const store = createStore(
   })
 );
 
+//export type DispatchType = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
 export { store };

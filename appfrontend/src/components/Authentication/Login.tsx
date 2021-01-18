@@ -23,7 +23,11 @@ const Login = ({ match }) => {
   ) : (
     <label>
       First Name:
-      <input required placeholder="Let us know how to address you" onInput={(e) => setName(e.target.value)} />
+      <input
+        required
+        placeholder="Let us know how to address you"
+        onInput={(e) => setName((e.target as HTMLInputElement).value)}
+      />
     </label>
   );
   const passwordConfirmationInput = isLogin ? (
@@ -33,10 +37,10 @@ const Login = ({ match }) => {
       Password Confirmation:
       <input
         type="password"
-        minLength="5"
+        minLength={5}
         required
         placeholder="Confirm your password here"
-        onInput={(e) => setConfirmPassword(e.target.value)}
+        onInput={(e) => setConfirmPassword((e.target as HTMLInputElement).value)}
       />
     </label>
   );
@@ -50,11 +54,11 @@ const Login = ({ match }) => {
 
   const moveToOther = isLogin ? (
     <Button fluid onClick={() => history.push("/register")}>
-      Don't have an account? Register <Icon name="right arrow" />
+      Don't have an account? Register <Icon name="arrow right" />
     </Button>
   ) : (
     <Button fluid onClick={() => history.push("/login")}>
-      Have an account? Login <Icon name="right arrow" />
+      Have an account? Login <Icon name="arrow right" />
     </Button>
   );
 
@@ -73,10 +77,10 @@ const Login = ({ match }) => {
         <label>
           Email:
           <input
-            onInput={(e) => setEmail(e.target.value)}
+            onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
             required
-            minLength="3"
-            maxLength="27"
+            minLength={3}
+            maxLength={27}
             placeholder="Enter your email here"
           />
         </label>
@@ -86,10 +90,10 @@ const Login = ({ match }) => {
           Password:
           <input
             type="password"
-            minLength="5"
+            minLength={5}
             required
             placeholder="Enter your password here"
-            onInput={(e) => setPassword(e.target.value)}
+            onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
           />
         </label>
         {passwordConfirmationInput}

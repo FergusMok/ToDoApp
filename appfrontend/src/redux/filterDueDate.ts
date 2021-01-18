@@ -1,5 +1,3 @@
-// This is the tags that the person will be selecting
-
 const filterDueDate = (value) => {
   return {
     type: "FILTERDATECHANGE",
@@ -7,7 +5,7 @@ const filterDueDate = (value) => {
   };
 };
 
-const resetFilterDueDate = (value) => {
+const resetFilterDueDate = () => {
   return {
     type: "FILTERDATERESET",
   };

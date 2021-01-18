@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Label } from "semantic-ui-react";
 import { addTag } from "../redux/filterTag";
 import { useSelector } from "react-redux";
+import { RootState } from "../redux/combineReducers";
 /* interface ToDoCardProps {
   item: {
     id: number,
@@ -23,7 +24,7 @@ const ToDoCard = ({ item }) => {
     </Label>
   ));
 
-  const isSortingByUpdateDate = useSelector((state) => state.sortState);
+  const isSortingByUpdateDate = useSelector((state: RootState) => state.sortState);
 
   // Default isSortingByUpdateDate is false
   const showDate = isSortingByUpdateDate

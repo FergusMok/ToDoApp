@@ -10,7 +10,9 @@ const NonAuthenticatedRoutes = ({ component: Component, ...rest }) => {
   useEffect(() => {
     const loggedInFn = async () => {
       const loggedInBoolean = await isLoggedIn();
-      setLoggedIn(loggedInBoolean);
+      if (typeof loggedInBoolean === "boolean") {
+        setLoggedIn(loggedInBoolean);
+      }
       setLoading(false);
     };
     loggedInFn();
