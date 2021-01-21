@@ -1,4 +1,4 @@
-const filterDueDate = (value) => {
+const filterDueDate = (value: number) => {
   return {
     type: "FILTERDATECHANGE",
     payload: value,
@@ -8,15 +8,18 @@ const filterDueDate = (value) => {
 const resetFilterDueDate = () => {
   return {
     type: "FILTERDATERESET",
+    payload: null,
   };
 };
 
-const filterDueDateReducer = (state = null, action) => {
+type ActionType = ReturnType<typeof filterDueDate> | ReturnType<typeof resetFilterDueDate>;
+
+const filterDueDateReducer = (state: number | null = null, action: ActionType) => {
   switch (action.type) {
     case "FILTERDATECHANGE":
       return action.payload;
     case "FILTERDATERESET":
-      return null;
+      return action.payload;
     default:
       return state;
   }

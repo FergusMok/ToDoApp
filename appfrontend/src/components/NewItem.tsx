@@ -4,7 +4,7 @@ import axios from "axios";
 import { API_LINK_ITEMS_POSTFIX } from "../api/API_LINK";
 import "./CSS/NewItem.css";
 import { markCompletion, deleteEntry, onFormEdit, onFormSubmit } from "../api/API_CRUD";
-import { useHistory, RouteComponentProps } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "react-datetime/css/react-datetime.css";
 import Datetime from "react-datetime";
@@ -14,7 +14,9 @@ import { RootState } from "../redux/combineReducers";
 import { tagOptionsObjectInterface, itemForSubmission, MatchProps } from "../typings";
 
 // Match's params contain either {}(/create) or an id(/completed/:id or /incomplete/:id).
-const NewItem = ({ match }: MatchProps) => {
+const NewItem = () => {
+  const match: MatchProps["match"] = useRouteMatch();
+  // Takes in type of MatchProps, and
   // Title and body can be converted 1 state, but flattened so as to prevent double re-rendering.
   const [titleState, setTitle] = useState<string>("");
   const [bodyState, setBody] = useState<string>("");

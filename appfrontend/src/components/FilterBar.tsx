@@ -6,10 +6,10 @@ import { sortByUpdateDate, sortByDueDate } from "../redux/sortType";
 import { filterDueDate, resetFilterDueDate } from "../redux/filterDueDate";
 import { RootState } from "../redux/combineReducers";
 import { tagOptionsObjectInterface, sortOptionObjectInterface, EmptyMatchProps, completeItem } from "../typings";
-import { RouteComponentProps } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const FilterBar = ({ match }: EmptyMatchProps) => {
-  const currentDatabase = useSelector((state: RootState) => state.databaseState);
+  const currentDatabase: completeItem[] = useSelector((state: RootState) => state.databaseState);
 
   const filterOptions = [
     { key: "one", text: "Filter due in a day", value: 1 },
@@ -88,7 +88,8 @@ const FilterBar = ({ match }: EmptyMatchProps) => {
             options={tagOptions}
             value={currentTag}
             onChange={(event, { value }) => {
-              dispatch(addTag(value));
+              console.log(value);
+              dispatch(addTag(value as string[]));
             }}
           />
         </Grid.Column>
@@ -100,9 +101,7 @@ const FilterBar = ({ match }: EmptyMatchProps) => {
             clearable
             options={filterOptions}
             onChange={(event, { value }) => {
-              console.log(value);
-              console.log(typeof value);
-              value ? dispatch(filterDueDate(value)) : dispatch(resetFilterDueDate());
+              value ? dispatch(filterDueDate(value as number)) : dispatch(resetFilterDueDate());
             }}
           />
         </Grid.Column>
@@ -111,4 +110,4 @@ const FilterBar = ({ match }: EmptyMatchProps) => {
   );
 };
 
-export default FilterBar;
+export default withRouter(FilterBar);

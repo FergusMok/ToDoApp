@@ -1,17 +1,13 @@
-import React from "react";
 import ToDoList from "./ToDoList";
 import "./CSS/HomePage.css";
 import FilterBar from "./FilterBar";
-import { RouteComponentProps } from "react-router-dom";
-import { EmptyMatchProps } from "../typings";
-import { Route } from "react-router-dom";
 
-const HomePage = ({ match }: EmptyMatchProps) => {
+const HomePage = () => {
   return (
     <>
       <br />
-      <FilterBar match={match} />
-      <ToDoList match={match} />
+      <FilterBar />
+      <ToDoList />
     </>
   );
 };

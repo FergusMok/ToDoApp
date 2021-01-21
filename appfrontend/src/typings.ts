@@ -1,7 +1,5 @@
 // Following the code style of Typescript team. See : https://github.com/Microsoft/TypeScript/blob/master/src/compiler/types.ts
-import { History, LocationState } from "history";
 import { RouteComponentProps } from "react-router-dom";
-import { FormEvent, ReactComponentElement } from "react";
 
 export interface userDetails {
   email: string;
@@ -41,7 +39,7 @@ export interface completeItem {
 export interface itemForSubmission {
   title: string;
   body: string;
-  user_id: number;
+  user_id: string;
   due_date: string;
   tag_list: string; // Ruby can only take the string.
 }
@@ -71,10 +69,12 @@ export interface computedMatch {
 }
 
 export interface AuthenticationRouteProp {
-  //component: (() => JSX.Element) | ((match: EmptyMatchProps) => JSX.Element);
-  component: (match: EmptyMatchProps) => Element;
-  computedMatch: computedMatch;
-  exact?: boolean;
-  location?: RouteComponentProps["location"];
-  path?: string;
+  component: () => JSX.Element;
+  path: string;
+  exact: boolean;
+}
+
+export interface reduxAction {
+  type: string;
+  payload?: number | completeItem[] | string[] | string | boolean;
 }

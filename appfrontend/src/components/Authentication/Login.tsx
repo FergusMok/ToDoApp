@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Message } from "semantic-ui-react";
 import "../CSS/NewItem.css";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { onFormSubmitLogin, onFormSubmitRegister } from "../../api/API_AUTHEN";
 import { Button, Icon } from "semantic-ui-react";
-import { userDetails, MatchProps } from "../../typings";
+import { userDetails } from "../../typings";
 
-const Login = ({ match }: MatchProps) => {
+const Login = () => {
+  const match = useRouteMatch();
   //// User Details
   const [userDetails, setUserDetails] = useState<userDetails>({
     email: "",

@@ -4,9 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 import LoadSpinner from "../LoadSpinner";
 import { AuthenticationRouteProp } from "../../typings";
 
-const NonAuthenticatedRoutes = (props) => {
-  const { component: Component, ...rest } = props;
-
+const NonAuthenticatedRoutes = ({ component: Component }: AuthenticationRouteProp) => {
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -24,7 +22,7 @@ const NonAuthenticatedRoutes = (props) => {
   const renderAuthenticatedPage = loading ? (
     <LoadSpinner text="Checking if logged in..." />
   ) : (
-    <Route render={(props) => (loggedIn ? <Redirect to="/incomplete" /> : <Component match={rest.computedMatch} />)} />
+    <Route render={(props) => (loggedIn ? <Redirect to="/incomplete" /> : <Component />)} />
   );
   return renderAuthenticatedPage;
 };

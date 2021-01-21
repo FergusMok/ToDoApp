@@ -6,7 +6,7 @@ import { RootState } from "../redux/combineReducers";
 import { ToDoItemProps } from "../typings";
 
 const ToDoCard = ({ item }: ToDoItemProps) => {
-  const tags = item.tag_list.map((tag: string) => (
+  const tags = item.tag_list.map((tag: any) => (
     <Label onClick={() => addTag(tag)} key={tag}>
       {tag}
     </Label>

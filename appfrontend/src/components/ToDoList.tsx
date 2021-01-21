@@ -8,6 +8,7 @@ import LoadSpinner from "./LoadSpinner";
 import { change_db } from "../redux/database";
 import { RootState, store } from "../redux/combineReducers";
 import { completeItem, EmptyMatchProps } from "../typings";
+import { withRouter } from "react-router-dom";
 
 const ToDoList = ({ match }: EmptyMatchProps) => {
   const activated = useSelector((state: RootState) => state.navigationState);
@@ -99,4 +100,4 @@ const ToDoList = ({ match }: EmptyMatchProps) => {
   return loading ? <LoadSpinner text="Loading data.." /> : displayDatabase();
 };
 
-export default ToDoList;
+export default withRouter(ToDoList);

@@ -3,14 +3,16 @@
 // const createStr = "create" === activated ? ' active' : ""
 // const completeStr = "completed" === activated ? ' active' : ""
 
-const navigate = (dest) => {
+const navigate = (dest: string) => {
   return {
     type: "CHANGENAVIGATION",
     payload: dest,
   };
 };
 
-const navigateReducer = (state = "", action) => {
+type ActionType = ReturnType<typeof navigate>;
+
+const navigateReducer = (state: string = "", action: ActionType) => {
   switch (action.type) {
     case "CHANGENAVIGATION":
       return action.payload;

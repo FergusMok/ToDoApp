@@ -11,8 +11,10 @@ const sortByUpdateDate = () => {
   };
 };
 
+type ActionType = ReturnType<typeof sortByDueDate> | ReturnType<typeof sortByUpdateDate>;
+
 // By default, we will sort by the due date.
-const sortReducer = (state = false, action) => {
+const sortReducer = (state: boolean = false, action: ActionType) => {
   switch (action.type) {
     case "SORTBYDUEDATE":
       return action.payload;
