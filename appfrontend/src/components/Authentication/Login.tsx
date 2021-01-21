@@ -4,20 +4,80 @@ import "../CSS/NewItem.css";
 import { useHistory } from "react-router-dom";
 import { onFormSubmitLogin, onFormSubmitRegister } from "../../api/API_AUTHEN";
 import { Button, Icon } from "semantic-ui-react";
+import { userDetails, MatchProps } from "../../typings";
 
-const Login = ({ match }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setConfirmPassword] = useState("");
-  const [name, setName] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [message, setMessage] = useState("");
+const Login = ({ match }: MatchProps) => {
+  //// User Details
+  const [userDetails, setUserDetails] = useState<userDetails>({
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+    name: "",
+  });
+  const setPassword = (password: string) =>
+    setUserDetails((prevState) => {
+      return {
+        email: prevState.email,
+        password: password,
+        passwordConfirmation: prevState.passwordConfirmation,
+        name: prevState.name,
+      };
+    });
+  const setEmail = (email: string) =>
+    setUserDetails((prevState) => {
+      return {
+        email: email,
+        password: prevState.password,
+        passwordConfirmation: prevState.passwordConfirmation,
+        name: prevState.name,
+      };
+    });
+  const setName = (name: string) =>
+    setUserDetails((prevState) => {
+      return {
+        email: prevState.email,
+        password: prevState.password,
+        passwordConfirmation: prevState.passwordConfirmation,
+        name: name,
+      };
+    });
+  const setConfirmPassword = (passwordConfirmation: string) =>
+    setUserDetails((prevState) => {
+      return {
+        email: prevState.email,
+        password: prevState.password,
+        passwordConfirmation: passwordConfirmation,
+        name: prevState.name,
+      };
+    });
+
+  //// Alert component
+  const [alertState, setAlert] = useState({
+    visible: false,
+    message: "",
+  });
+
+  const closeAlert = () =>
+    setAlert((prevState) => {
+      return { visible: false, message: prevState.message };
+    });
+
+  const setWrongPasswordAlert = (): void => setAlert({ visible: true, message: "Wrong email and/or password!" });
+  const setPasswordsDontMatch = (): void => setAlert({ visible: true, message: "Passwords do not match!" });
+
+  const alert = alertState.visible ? (
+    <Message onDismiss={() => closeAlert()} negative size="large">
+      {alertState.message}
+    </Message>
+  ) : (
+    <> </>
+  );
+
+  //// Conditional Rendering Components
   const history = useHistory();
-
   const isLogin = match.path === "/login";
 
   // Upon logging in, redux will store this person's account ID.
-
   const nameForm = isLogin ? (
     <> </>
   ) : (
@@ -44,13 +104,6 @@ const Login = ({ match }) => {
       />
     </label>
   );
-  const alert = visible ? (
-    <Message onDismiss={() => setVisible(false)} negative size="large">
-      {message}
-    </Message>
-  ) : (
-    <> </>
-  );
 
   const moveToOther = isLogin ? (
     <Button fluid onClick={() => history.push("/register")}>
@@ -68,8 +121,8 @@ const Login = ({ match }) => {
         className="NewItemform"
         onSubmit={(event) =>
           isLogin
-            ? onFormSubmitLogin(event, history, setMessage, setVisible, email, password)
-            : onFormSubmitRegister(event, history, setMessage, setVisible, email, password, passwordConfirmation, name)
+            ? onFormSubmitLogin(event, history, setWrongPasswordAlert, userDetails)
+            : onFormSubmitRegister(event, history, setWrongPasswordAlert, setPasswordsDontMatch, userDetails)
         }
       >
         <h1> {isLogin ? "Login" : "Register an account!"} </h1>

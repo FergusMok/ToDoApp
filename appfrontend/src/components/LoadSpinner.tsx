@@ -1,9 +1,6 @@
 import React from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
-
-interface SpinnerProps {
-  text: string;
-}
+import { SpinnerProps } from "../typings";
 
 const LoadSpinner = ({ text }: SpinnerProps) => {
   return (

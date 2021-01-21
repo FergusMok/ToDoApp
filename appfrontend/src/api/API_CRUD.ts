@@ -2,16 +2,22 @@ import { API_LINK_ITEMS_POSTFIX, API_LINK_USERSHOW_POSTFIX } from "./API_LINK";
 import axios from "axios";
 import { change_db } from "../redux/database";
 import { store } from "../redux/combineReducers";
+import { History, LocationState } from "history";
+import { itemForSubmission, completeItem, MatchProps, ExistingItem } from "../typings";
+import { FormEvent } from "react";
 
 // Get completed or incompleted
 const getDatabase = (isCompleted: boolean) => {
   axios
     .get(API_LINK_USERSHOW_POSTFIX, { withCredentials: true })
-    .then((resp) => store.dispatch(change_db(resp.data.data.filter((item) => item.completed === isCompleted))))
+    .then((resp) =>
+      store.dispatch(change_db(resp.data.data.filter((item: completeItem) => item.completed === isCompleted)))
+    )
     .catch((errors) => console.log(errors));
 };
 
-const markCompletion = async (id: number, isCompleted: boolean) => {
+// There's no way for id to be undefined due to checks, but typescript wont stop prompting.
+const markCompletion = async (id: string | undefined, isCompleted: boolean) => {
   // Put request to mark complete
   await axios
     .put(`${API_LINK_ITEMS_POSTFIX}/${id}`, {
@@ -24,7 +30,7 @@ const markCompletion = async (id: number, isCompleted: boolean) => {
   getDatabase(isCompleted);
 };
 
-const redirect = (match, history) => {
+const redirect = (match: MatchProps["match"], history: History<LocationState>) => {
   // Redirect once CRUD operaton is done.
   const isCompleted = match.path === "/completed/:id";
   if (isCompleted) {
@@ -36,13 +42,19 @@ const redirect = (match, history) => {
   }
 };
 
-const deleteEntry = async (id: number) => {
+// There's no way for id to be undefined due to checks, but typescript wont stop prompting.
+const deleteEntry = async (id: string | undefined) => {
   // Destroy
   await axios.delete(`${API_LINK_ITEMS_POSTFIX}/${id}`);
 };
 
 // Completed defaulted to be false
-const onFormSubmit = async (event, item, match, history) => {
+const onFormSubmit = async (
+  event: FormEvent<HTMLFormElement>,
+  item: itemForSubmission,
+  match: MatchProps["match"],
+  history: History<LocationState>
+) => {
   event.preventDefault();
   const due_date = item.due_date ? item.due_date.toString() : null;
   await axios
@@ -60,7 +72,13 @@ const onFormSubmit = async (event, item, match, history) => {
   redirect(match, history);
 };
 
-const onFormEdit = async (event, objectid, item, match, history) => {
+const onFormEdit = async (
+  event: FormEvent<HTMLFormElement>,
+  objectid: string | undefined, // There's no way for id to be undefined due to checks, but typescript wont stop prompting.
+  item: itemForSubmission,
+  match: MatchProps["match"],
+  history: History<LocationState>
+) => {
   event.preventDefault();
   const due_date = item.due_date ? item.due_date.toString() : null;
   await axios

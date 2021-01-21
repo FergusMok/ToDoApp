@@ -4,29 +4,17 @@ import axios from "axios";
 import { API_LINK_ITEMS_POSTFIX } from "../api/API_LINK";
 import "./CSS/NewItem.css";
 import { markCompletion, deleteEntry, onFormEdit, onFormSubmit } from "../api/API_CRUD";
-import { useHistory } from "react-router-dom";
+import { useHistory, RouteComponentProps } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "react-datetime/css/react-datetime.css";
 import Datetime from "react-datetime";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import LoadSpinner from "./LoadSpinner";
 import { RootState } from "../redux/combineReducers";
+import { tagOptionsObjectInterface, itemForSubmission, MatchProps } from "../typings";
 
-interface tagOptionsObjectInterface {
-  key: string;
-  text: string;
-  value: string;
-}
-
-interface itemObject {
-  title: string;
-  body: string;
-  user_id: number;
-  due_date: string;
-  tag_list: string; // Ruby can only take the string.
-}
-
-const NewItem = ({ match }) => {
+// Match's params contain either {}(/create) or an id(/completed/:id or /incomplete/:id).
+const NewItem = ({ match }: MatchProps) => {
   // Title and body can be converted 1 state, but flattened so as to prevent double re-rendering.
   const [titleState, setTitle] = useState<string>("");
   const [bodyState, setBody] = useState<string>("");
@@ -49,7 +37,7 @@ const NewItem = ({ match }) => {
   var inputProps = { placeholder: "Due date" };
   const [calendarDate, setCalendarDate] = useState<string>(""); // "" when empty, Date type otherwise
   var yesterday = moment().subtract(1, "day"); // This function and below is all given by react-datetime.
-  var valid = function (current) {
+  var valid = (current: Moment) => {
     return current.isAfter(yesterday);
   };
 
@@ -57,7 +45,7 @@ const NewItem = ({ match }) => {
     // Fills up the form for put request.
     const refreshArticle = async () => {
       if (!isNewItem()) {
-        const itemDetails = await axios.get(`${API_LINK_ITEMS_POSTFIX}/${match.params.id}`);
+        const itemDetails = await axios.get(`${API_LINK_ITEMS_POSTFIX}/${match?.params?.id}`);
         setTitle(itemDetails.data.data.title);
         setBody(itemDetails.data.data.body);
         // Parse the tags, and set them to the tagState
@@ -93,14 +81,18 @@ const NewItem = ({ match }) => {
   // Conditional rendering of the buttons
   const submitEditButton = <button type="submit">{isNewItem() ? "Submit" : "Edit"}</button>;
 
-  const deleteButton = isNewItem() ? <></> : <button onClick={() => deleteEntry(match.params.id)}> {"Delete"} </button>;
+  const deleteButton = isNewItem() ? (
+    <></>
+  ) : (
+    <button onClick={() => deleteEntry(match?.params?.id)}> {"Delete"} </button>
+  );
 
   const completeIncompleteButton = isNewItem() ? ( // Double ternary
     <></>
   ) : isCompleted() ? (
-    <button onClick={() => markCompletion(match.params.id, true)}>{"Mark as Incomplete"}</button>
+    <button onClick={() => markCompletion(match?.params?.id, true)}>{"Mark as Incomplete"}</button>
   ) : (
-    <button onClick={() => markCompletion(match.params.id, false)}>{"Mark as Complete"}</button>
+    <button onClick={() => markCompletion(match?.params?.id, false)}>{"Mark as Complete"}</button>
   );
 
   // If is a new item, render immediately
@@ -112,7 +104,7 @@ const NewItem = ({ match }) => {
       <form
         className="NewItemform"
         onSubmit={(event) => {
-          const item: itemObject = {
+          const item: itemForSubmission = {
             user_id: userID,
             title: titleState,
             body: bodyState,
@@ -121,7 +113,7 @@ const NewItem = ({ match }) => {
           };
           isNewItem()
             ? onFormSubmit(event, item, match, history)
-            : onFormEdit(event, match.params.id, item, match, history);
+            : onFormEdit(event, match?.params?.id, item, match, history);
         }}
       >
         <h1> {isNewItem() ? "Create new item!" : "Edit item!"} </h1>

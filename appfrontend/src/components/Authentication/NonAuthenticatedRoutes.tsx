@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { isLoggedIn } from "../../api/API_AUTHEN";
 import { Route, Redirect } from "react-router-dom";
 import LoadSpinner from "../LoadSpinner";
+import { AuthenticationRouteProp } from "../../typings";
 
-const NonAuthenticatedRoutes = ({ component: Component, ...rest }) => {
+const NonAuthenticatedRoutes = (props) => {
+  const { component: Component, ...rest } = props;
+
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
 

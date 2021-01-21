@@ -1,14 +1,15 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { XMasonry, XBlock } from "react-xmasonry";
-import ToDoItem from "./ToDoCard";
+import ToDoCard from "./ToDoCard";
 import { getDatabase } from "../api/API_CRUD";
 import "./CSS/ToDoList.css";
 import LoadSpinner from "./LoadSpinner";
 import { change_db } from "../redux/database";
 import { RootState, store } from "../redux/combineReducers";
+import { completeItem, EmptyMatchProps } from "../typings";
 
-const ToDoList = ({ match }) => {
+const ToDoList = ({ match }: EmptyMatchProps) => {
   const activated = useSelector((state: RootState) => state.navigationState);
   const currentDatabase = useSelector((state: RootState) => state.databaseState);
   const currentTag = useSelector((state: RootState) => state.tagState);
@@ -26,7 +27,7 @@ const ToDoList = ({ match }) => {
     databaseFn();
   }, [activated]);
 
-  const filterBasedOnTag = (jsonObject) => {
+  const filterBasedOnTag = (jsonObject: completeItem) => {
     // If currentTag is not empty, then we will filter based on currentTag
     if (currentTag.length > 0) {
       if (jsonObject.tag_list.filter((e) => currentTag.indexOf(e) !== -1).length > 0) {
@@ -40,7 +41,7 @@ const ToDoList = ({ match }) => {
     }
   };
   const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-  const filterBasedOnDueDate = (jsonObject) => {
+  const filterBasedOnDueDate = (jsonObject: completeItem) => {
     if (!filterDueDateDaysBy) {
       return true;
     } else {
@@ -55,10 +56,10 @@ const ToDoList = ({ match }) => {
   };
 
   // Comparators
-  const sortBasedOnUpdate = (a, b) => {
+  const sortBasedOnUpdate = (a: completeItem, b: completeItem) => {
     return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
   };
-  const sortBasedOnDueDate = (a, b) => {
+  const sortBasedOnDueDate = (a: completeItem, b: completeItem) => {
     if (a.due_date === b.due_date) {
       return 0;
     } else if (a.due_date === null) {
@@ -71,14 +72,16 @@ const ToDoList = ({ match }) => {
   };
   // This has very high complexity, may bottleneck here.
   const renderDatabase = currentDatabase
-    .filter((x) => filterBasedOnTag(x))
-    .filter((x) => filterBasedOnDueDate(x))
-    .sort((a, b) => (isSortingByUpdateDate ? sortBasedOnUpdate(a, b) : sortBasedOnDueDate(a, b)))
-    .map((jsonObject) => {
+    .filter((x: completeItem) => filterBasedOnTag(x))
+    .filter((x: completeItem) => filterBasedOnDueDate(x))
+    .sort((a: completeItem, b: completeItem) =>
+      isSortingByUpdateDate ? sortBasedOnUpdate(a, b) : sortBasedOnDueDate(a, b)
+    )
+    .map((jsonObject: completeItem) => {
       return (
         <XBlock key={jsonObject.id}>
           <div className="XMasonryCard">
-            <ToDoItem item={jsonObject} />
+            <ToDoCard item={jsonObject} />
           </div>
         </XBlock>
       );

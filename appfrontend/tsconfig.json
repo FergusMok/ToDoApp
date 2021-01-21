@@ -18,5 +18,5 @@
     "noImplicitAny": false, // This will change later on
     "downlevelIteration": true // This is to allow tagState in FilterBar.tsx to work. Iterate through the Set
   },
-  "include": ["src"]
+  "include": ["src", "src/**/*.ts"]
 }

@@ -7,6 +7,7 @@ import AuthenticatedRoutes from "./Authentication/AuthenticatedRoutes";
 import NonAuthenticatedRoutes from "./Authentication/NonAuthenticatedRoutes";
 import NotFoundPage from "./Authentication/NotFoundPage";
 import Welcome from "./WelcomePage";
+import { Testing } from "./Testing";
 const App = () => {
   return (
     <>
@@ -23,6 +24,7 @@ const App = () => {
           <NonAuthenticatedRoutes path="/register" exact component={Login} />
           {/* Accessible regardless of login status */}
           <Route path="/" exact component={Welcome} />
+          <Route path="/test" exact component={Testing} />
           <Route path="/:someURL" component={NotFoundPage} />
         </Switch>
       </Router>

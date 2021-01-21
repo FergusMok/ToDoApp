@@ -3,8 +3,10 @@ import { API_LINK } from "./API_LINK";
 import { addName, removeName } from "../redux/userName";
 import { addID, removeID } from "../redux/userID";
 import { store } from "../redux/combineReducers";
-
+import { History, LocationState } from "history";
 import axios from "axios";
+import { userDetails } from "../typings";
+import { FormEvent } from "react";
 
 const isLoggedIn = async () => {
   try {
@@ -21,7 +23,7 @@ const isLoggedIn = async () => {
   }
 };
 
-const logOut = (history) => {
+const logOut = (history: History<LocationState>) => {
   axios
     .delete(`${API_LINK}logout`, { withCredentials: true })
     .then((response) => {
@@ -33,15 +35,20 @@ const logOut = (history) => {
     .catch((err) => console.log("logout", `${API_LINK}logout`));
 };
 
-const onFormSubmitLogin = (event, history, setMessage, setVisible, email, password) => {
+const onFormSubmitLogin = (
+  event: FormEvent<HTMLFormElement>,
+  history: History<LocationState>,
+  setWrongPasswordAlert: () => void,
+  userDetails: userDetails
+) => {
   event.preventDefault();
   axios
     .post(
       API_LINK_SESSIONS_POSTFIX,
       {
         user: {
-          email: email.toLowerCase(),
-          password: password,
+          email: userDetails.email.toLowerCase(),
+          password: userDetails.password,
         },
       },
       { withCredentials: true }
@@ -51,29 +58,33 @@ const onFormSubmitLogin = (event, history, setMessage, setVisible, email, passwo
         history.push("/incomplete");
         return true;
       } else {
-        setMessage("Wrong email and/or password!");
-        setVisible(true);
+        setWrongPasswordAlert();
         return false;
       }
     })
     .catch((error) => console.log("Login", error, `${API_LINK}logout`));
 };
 
-const onFormSubmitRegister = (event, history, setMessage, setVisible, email, password, passwordConfirmation, name) => {
+const onFormSubmitRegister = (
+  event: FormEvent<HTMLFormElement>,
+  history: History<LocationState>,
+  setWrongPasswordAlert: () => void,
+  setPasswordsDontMatch: () => void,
+  userDetails: userDetails
+) => {
   event.preventDefault();
-  if (password !== passwordConfirmation) {
-    setMessage("Passwords do not match!");
-    setVisible(true);
+  if (userDetails.password !== userDetails.passwordConfirmation) {
+    setPasswordsDontMatch();
   } else {
     axios
       .post(
         API_LINK_REGISTRATIONS_POSTFIX,
         {
           user: {
-            email: email.toLowerCase(),
-            name: name,
-            password: password,
-            password_confirmation: passwordConfirmation,
+            email: userDetails.email.toLowerCase(),
+            name: userDetails.name,
+            password: userDetails.password,
+            password_confirmation: userDetails.passwordConfirmation,
           },
         },
         { withCredentials: true }
@@ -84,8 +95,7 @@ const onFormSubmitRegister = (event, history, setMessage, setVisible, email, pas
         }
       })
       .catch((error) => {
-        setMessage("Invalid email and/or password!");
-        setVisible(true);
+        setWrongPasswordAlert();
         console.log("Register", error);
       });
   }

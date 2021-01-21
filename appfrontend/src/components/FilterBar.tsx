@@ -5,19 +5,10 @@ import { Dropdown, Container, Grid } from "semantic-ui-react";
 import { sortByUpdateDate, sortByDueDate } from "../redux/sortType";
 import { filterDueDate, resetFilterDueDate } from "../redux/filterDueDate";
 import { RootState } from "../redux/combineReducers";
+import { tagOptionsObjectInterface, sortOptionObjectInterface, EmptyMatchProps, completeItem } from "../typings";
+import { RouteComponentProps } from "react-router-dom";
 
-interface tagOptionsObjectInterface {
-  key: string;
-  text: string;
-  value: string;
-}
-interface sortOptionObjectInterface {
-  key: string;
-  text: string;
-  value: boolean | string;
-}
-
-const FilterBar = ({ match }) => {
+const FilterBar = ({ match }: EmptyMatchProps) => {
   const currentDatabase = useSelector((state: RootState) => state.databaseState);
 
   const filterOptions = [
@@ -46,8 +37,10 @@ const FilterBar = ({ match }) => {
       const tagsList = [
         ...new Set<string>(
           currentDatabase
-            .filter((jsonObject) => jsonObject.completed === isCompleted() && jsonObject.tag_list.length > 0)
-            .map((jsonObject) => jsonObject.tag_list)
+            .filter(
+              (jsonObject: completeItem) => jsonObject.completed === isCompleted() && jsonObject.tag_list.length > 0
+            )
+            .map((jsonObject: completeItem) => jsonObject.tag_list)
             .flat()
         ),
       ];

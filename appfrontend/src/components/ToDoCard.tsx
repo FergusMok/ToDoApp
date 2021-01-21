@@ -4,20 +4,7 @@ import { Link } from "react-router-dom";
 import ToDoCard from "./ToDoCardContent";
 import "./CSS/ToDoItem.css";
 import { markCompletion } from "../api/API_CRUD";
-
-interface ToDoItemProps {
-  item: {
-    id: number;
-    title: string;
-    body: string;
-    created_at: string;
-    updated_at: string;
-    completed: boolean;
-    user_id: number;
-    due_date: string;
-    tag_list: Array<String>;
-  };
-}
+import { ToDoItemProps } from "../typings";
 
 const ToDoItem = ({ item }: ToDoItemProps) => {
   const [active, setActive] = useState(false);
