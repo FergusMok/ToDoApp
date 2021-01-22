@@ -18,6 +18,8 @@ set :output, "/cron.log"
 # end
 
 #### USE THIS INSTEAD OF HEROKU SCHEDULER IF YOUR SERVER RUNS 24/7
+#### Works with the whenever gem
+
 #every 1.day, :at => '12:01 am' do 
 #    runner "User.emailUsers"
 #s  end
