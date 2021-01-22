@@ -30,9 +30,8 @@ const markCompletion = async (id: string | undefined, isCompleted: boolean) => {
   getDatabase(isCompleted);
 };
 
-const redirect = (match: MatchProps["match"], history: History<LocationState>) => {
+const redirect = (isCompleted: boolean, history: History<LocationState>) => {
   // Redirect once CRUD operaton is done.
-  const isCompleted = match.path === "/completed/:id";
   if (isCompleted) {
     // Complete will route back to complete
     history.push("/completed");
@@ -52,7 +51,6 @@ const deleteEntry = async (id: string | undefined) => {
 const onFormSubmit = async (
   event: FormEvent<HTMLFormElement>,
   item: itemForSubmission,
-  match: MatchProps["match"],
   history: History<LocationState>
 ) => {
   event.preventDefault();
@@ -69,14 +67,14 @@ const onFormSubmit = async (
       console.log(resp);
     })
     .catch((resp) => console.log(resp));
-  redirect(match, history);
+  redirect(false, history);
 };
 
 const onFormEdit = async (
   event: FormEvent<HTMLFormElement>,
-  objectid: string | undefined, // There's no way for id to be undefined due to checks, but typescript wont stop prompting.
+  objectid: string,
   item: itemForSubmission,
-  match: MatchProps["match"],
+  location,
   history: History<LocationState>
 ) => {
   event.preventDefault();
@@ -100,7 +98,8 @@ const onFormEdit = async (
         console.log("Error", error);
       }
     });
-  redirect(match, history);
+  const regex = new RegExp("^/completed/[0-9]+$"); // Check if isComplete
+  redirect(regex.test(location.pathname), history);
 };
 
 export { getDatabase, markCompletion, deleteEntry, onFormEdit, onFormSubmit };

@@ -4,19 +4,23 @@ import axios from "axios";
 import { API_LINK_ITEMS_POSTFIX } from "../api/API_LINK";
 import "./CSS/NewItem.css";
 import { markCompletion, deleteEntry, onFormEdit, onFormSubmit } from "../api/API_CRUD";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "react-datetime/css/react-datetime.css";
 import Datetime from "react-datetime";
 import moment, { Moment } from "moment";
 import LoadSpinner from "./LoadSpinner";
 import { RootState } from "../redux/combineReducers";
-import { tagOptionsObjectInterface, itemForSubmission, MatchProps } from "../typings";
+import { tagOptionsObjectInterface, itemForSubmission } from "../typings";
+import { Location } from "history"; // Important, because Location is found on 2 .d.ts. The typescript and history files.
 
 // Match's params contain either {}(/create) or an id(/completed/:id or /incomplete/:id).
 const NewItem = () => {
-  const match: MatchProps["match"] = useRouteMatch();
-  // Takes in type of MatchProps, and
+  // I've decided to not use match because it introduced alot of unsolvable problems
+  // within Typescript, and instead I'll parse the location for the id. Far easier.
+  const location: Location<undefined> = useLocation();
+  const itemID: string = location.pathname.split("/")[2];
+
   // Title and body can be converted 1 state, but flattened so as to prevent double re-rendering.
   const [titleState, setTitle] = useState<string>("");
   const [bodyState, setBody] = useState<string>("");
@@ -32,8 +36,8 @@ const NewItem = () => {
 
   // Determines the rendering of the page
   const history = useHistory();
-  const isNewItem = useCallback(() => match.path === "/create", [match]);
-  const isCompleted = useCallback(() => match.path === "/completed/:id", [match]);
+  const isNewItem = useCallback(() => location.pathname === "/create", [location]);
+  const isCompleted = useCallback(() => location.pathname === "/completed/:id", [location]);
 
   // Calendar-related var
   var inputProps = { placeholder: "Due date" };
@@ -47,7 +51,7 @@ const NewItem = () => {
     // Fills up the form for put request.
     const refreshArticle = async () => {
       if (!isNewItem()) {
-        const itemDetails = await axios.get(`${API_LINK_ITEMS_POSTFIX}/${match?.params?.id}`);
+        const itemDetails = await axios.get(`${API_LINK_ITEMS_POSTFIX}/${itemID}`);
         setTitle(itemDetails.data.data.title);
         setBody(itemDetails.data.data.body);
         // Parse the tags, and set them to the tagState
@@ -78,23 +82,19 @@ const NewItem = () => {
       }
     };
     refreshArticle();
-  }, [match.path]);
+  }, [location.pathname]);
 
   // Conditional rendering of the buttons
   const submitEditButton = <button type="submit">{isNewItem() ? "Submit" : "Edit"}</button>;
 
-  const deleteButton = isNewItem() ? (
-    <></>
-  ) : (
-    <button onClick={() => deleteEntry(match?.params?.id)}> {"Delete"} </button>
-  );
+  const deleteButton = isNewItem() ? <></> : <button onClick={() => deleteEntry(itemID)}> {"Delete"} </button>;
 
   const completeIncompleteButton = isNewItem() ? ( // Double ternary
     <></>
   ) : isCompleted() ? (
-    <button onClick={() => markCompletion(match?.params?.id, true)}>{"Mark as Incomplete"}</button>
+    <button onClick={() => markCompletion(itemID, false)}>{"Mark as Complete"}</button>
   ) : (
-    <button onClick={() => markCompletion(match?.params?.id, false)}>{"Mark as Complete"}</button>
+    <button onClick={() => markCompletion(itemID, true)}>{"Mark as Incomplete"}</button>
   );
 
   // If is a new item, render immediately
@@ -113,9 +113,7 @@ const NewItem = () => {
             tag_list: currentTag.toString(),
             due_date: calendarDate,
           };
-          isNewItem()
-            ? onFormSubmit(event, item, match, history)
-            : onFormEdit(event, match?.params?.id, item, match, history);
+          isNewItem() ? onFormSubmit(event, item, history) : onFormEdit(event, itemID, item, location, history);
         }}
       >
         <h1> {isNewItem() ? "Create new item!" : "Edit item!"} </h1>

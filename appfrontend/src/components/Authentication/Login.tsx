@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Message } from "semantic-ui-react";
 import "../CSS/NewItem.css";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { onFormSubmitLogin, onFormSubmitRegister } from "../../api/API_AUTHEN";
 import { Button, Icon } from "semantic-ui-react";
 import { userDetails } from "../../typings";
 
 const Login = () => {
-  const match = useRouteMatch();
+  const location = useLocation();
+  console.log(location);
   //// User Details
   const [userDetails, setUserDetails] = useState<userDetails>({
     email: "",
@@ -76,7 +77,7 @@ const Login = () => {
 
   //// Conditional Rendering Components
   const history = useHistory();
-  const isLogin = match.path === "/login";
+  const isLogin = location.pathname === "/login";
 
   // Upon logging in, redux will store this person's account ID.
   const nameForm = isLogin ? (

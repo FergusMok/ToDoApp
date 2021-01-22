@@ -5,10 +5,10 @@ import { Dropdown, Container, Grid } from "semantic-ui-react";
 import { sortByUpdateDate, sortByDueDate } from "../redux/sortType";
 import { filterDueDate, resetFilterDueDate } from "../redux/filterDueDate";
 import { RootState } from "../redux/combineReducers";
-import { tagOptionsObjectInterface, sortOptionObjectInterface, EmptyMatchProps, completeItem } from "../typings";
-import { withRouter } from "react-router-dom";
+import { tagOptionsObjectInterface, sortOptionObjectInterface, completeItem } from "../typings";
+import { useLocation } from "react-router-dom";
 
-const FilterBar = ({ match }: EmptyMatchProps) => {
+const FilterBar = () => {
   const currentDatabase: completeItem[] = useSelector((state: RootState) => state.databaseState);
 
   const filterOptions = [
@@ -28,7 +28,8 @@ const FilterBar = ({ match }: EmptyMatchProps) => {
   const [DropdownSortText, setDropdownSortText] = useState<sortOptionObjectInterface>(sortOptions[0]);
 
   const dispatch = useDispatch();
-  const isCompleted = useCallback(() => match.path === "/completed", [match]);
+  const location = useLocation();
+  const isCompleted = useCallback(() => location.pathname === "/completed", [location]);
 
   useEffect(() => {
     // Parse through the available tags, and display them as options
@@ -60,7 +61,7 @@ const FilterBar = ({ match }: EmptyMatchProps) => {
     dispatch(resetFilterDueDate());
     dispatch(sortByDueDate()); // Sort state
     setDropdownSortText(sortOptions[0]); // Sort animation
-  }, [match]);
+  }, [location]);
 
   return (
     <Container>
@@ -110,4 +111,4 @@ const FilterBar = ({ match }: EmptyMatchProps) => {
   );
 };
 
-export default withRouter(FilterBar);
+export default FilterBar;

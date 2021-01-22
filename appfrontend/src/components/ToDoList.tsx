@@ -7,22 +7,23 @@ import "./CSS/ToDoList.css";
 import LoadSpinner from "./LoadSpinner";
 import { change_db } from "../redux/database";
 import { RootState, store } from "../redux/combineReducers";
-import { completeItem, EmptyMatchProps } from "../typings";
-import { withRouter } from "react-router-dom";
+import { completeItem } from "../typings";
+import { useLocation } from "react-router-dom";
 
-const ToDoList = ({ match }: EmptyMatchProps) => {
+const ToDoList = () => {
   const activated = useSelector((state: RootState) => state.navigationState);
   const currentDatabase = useSelector((state: RootState) => state.databaseState);
   const currentTag = useSelector((state: RootState) => state.tagState);
   const isSortingByUpdateDate = useSelector((state: RootState) => state.sortState);
   const filterDueDateDaysBy = useSelector((state: RootState) => state.dueDateState);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     store.dispatch(change_db([]));
     setLoading(true);
     const databaseFn = async () => {
-      await getDatabase(match.path !== "/incomplete");
+      await getDatabase(location.pathname !== "/incomplete");
       setLoading(false);
     };
     databaseFn();
@@ -100,4 +101,4 @@ const ToDoList = ({ match }: EmptyMatchProps) => {
   return loading ? <LoadSpinner text="Loading data.." /> : displayDatabase();
 };
 
-export default withRouter(ToDoList);
+export default ToDoList;
