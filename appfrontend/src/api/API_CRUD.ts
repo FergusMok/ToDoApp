@@ -5,6 +5,7 @@ import { store } from "../redux/combineReducers";
 import { History, LocationState } from "history";
 import { itemForSubmission, completeItem, MatchProps } from "../typings";
 import { FormEvent } from "react";
+import { Location } from "history"; // Important, because Location is found on 2 .d.ts. The typescript and history files.
 
 // Get completed or incompleted
 const getDatabase = (isCompleted: boolean) => {
@@ -74,7 +75,7 @@ const onFormEdit = async (
   event: FormEvent<HTMLFormElement>,
   objectid: string,
   item: itemForSubmission,
-  location,
+  location: Location<undefined>,
   history: History<LocationState>
 ) => {
   event.preventDefault();
