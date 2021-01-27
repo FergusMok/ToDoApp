@@ -55,8 +55,6 @@ export interface ExistingItem {
 
 export interface MatchProps extends RouteComponentProps<ExistingItem | undefined> {}
 
-// I need a MatchProp, that contains match. And that match does not contain anything
-
 export interface EmptyMatchProps {
   match: RouteComponentProps["match"];
 }
