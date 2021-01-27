@@ -7,6 +7,7 @@ import { filterDueDate, resetFilterDueDate } from "../redux/filterDueDate";
 import { RootState } from "../redux/combineReducers";
 import { tagOptionsObjectInterface, sortOptionObjectInterface, completeItem } from "../typings";
 import { useLocation } from "react-router-dom";
+import { filterSearchText, resetSearchText } from "../redux/filterSearchText";
 
 const FilterBar = () => {
   const currentDatabase: completeItem[] = useSelector((state: RootState) => state.databaseState);
@@ -24,8 +25,11 @@ const FilterBar = () => {
     { key: "SORTBYDUEDATE", text: "Sort by due date", value: false },
     { key: "SORTBYUPDATE", text: "Sort by update date", value: true },
   ];
+
   // This state is solely for animating. I didn't want redux to take in the whole object value returned by Semantic
   const [DropdownSortText, setDropdownSortText] = useState<sortOptionObjectInterface>(sortOptions[0]);
+
+  const searchText: string = useSelector((state: RootState) => state.searchTextState);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -53,7 +57,7 @@ const FilterBar = () => {
       );
     };
     refreshFilterBar();
-  }, [currentDatabase]);
+  }, [currentDatabase, isCompleted]);
 
   // Reset the dropdown animiations and states when changing to a new page.
   useEffect(() => {
@@ -61,10 +65,18 @@ const FilterBar = () => {
     dispatch(resetFilterDueDate());
     dispatch(sortByDueDate()); // Sort state
     setDropdownSortText(sortOptions[0]); // Sort animation
-  }, [location]);
+    dispatch(resetSearchText());
+    // eslint-disable-next-line
+  }, [location, dispatch]);
 
   return (
     <Container>
+      <input
+        value={searchText}
+        onInput={(e) => dispatch(filterSearchText((e.target as HTMLInputElement).value))}
+        placeholder="Search title & body here"
+      />
+
       <Grid columns={3} stackable>
         <Grid.Column>
           <Dropdown

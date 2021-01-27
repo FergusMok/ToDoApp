@@ -3,7 +3,7 @@ import axios from "axios";
 import { change_db } from "../redux/database";
 import { store } from "../redux/combineReducers";
 import { History, LocationState } from "history";
-import { itemForSubmission, completeItem, MatchProps } from "../typings";
+import { itemForSubmission, completeItem } from "../typings";
 import { FormEvent } from "react";
 import { Location } from "history"; // Important, because Location is found on 2 .d.ts. The typescript and history files.
 

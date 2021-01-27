@@ -16,6 +16,7 @@ const ToDoList = () => {
   const currentTag = useSelector((state: RootState) => state.tagState);
   const isSortingByUpdateDate = useSelector((state: RootState) => state.sortState);
   const filterDueDateDaysBy = useSelector((state: RootState) => state.dueDateState);
+  const searchText: string = useSelector((state: RootState) => state.searchTextState);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
@@ -27,7 +28,16 @@ const ToDoList = () => {
       setLoading(false);
     };
     databaseFn();
-  }, [activated]);
+  }, [activated, location]);
+
+  const filterBasedOnSearchText = (jsonObject: completeItem) => {
+    if (searchText) {
+      const filterArray = searchText.split(" ");
+      const message = jsonObject.body.split(" ").concat(jsonObject.title.split(" "));
+      return filterArray.every((string) => message.includes(string));
+    }
+    return true;
+  };
 
   const filterBasedOnTag = (jsonObject: completeItem) => {
     // If currentTag is not empty, then we will filter based on currentTag
@@ -74,6 +84,7 @@ const ToDoList = () => {
   };
   // This has very high complexity, may bottleneck here.
   const renderDatabase = currentDatabase
+    .filter((x: completeItem) => filterBasedOnSearchText(x))
     .filter((x: completeItem) => filterBasedOnTag(x))
     .filter((x: completeItem) => filterBasedOnDueDate(x))
     .sort((a: completeItem, b: completeItem) =>
@@ -89,14 +100,9 @@ const ToDoList = () => {
       );
     });
 
-  // If renderDatabase is loading, we'll need buffer some things first right
   const displayDatabase = useCallback(() => {
-    return (
-      //
-      //<XMasonry style={{ marginTop: "5vh" }} maxColumns={4}>
-      <XMasonry maxColumns={4}>{renderDatabase}</XMasonry>
-    );
-  }, [currentTag, renderDatabase]);
+    return <XMasonry maxColumns={4}>{renderDatabase}</XMasonry>;
+  }, [renderDatabase]);
 
   return loading ? <LoadSpinner text="Loading data.." /> : displayDatabase();
 };

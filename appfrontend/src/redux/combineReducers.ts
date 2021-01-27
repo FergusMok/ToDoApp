@@ -6,6 +6,7 @@ import { IDReducer } from "./userID";
 import { userNameReducer } from "./userName";
 import { sortReducer } from "./sortType";
 import { filterDueDateReducer } from "./filterDueDate";
+import { filterSearchTextReducer } from "./filterSearchText";
 const store = createStore(
   combineReducers({
     databaseState: changeDBReducer,
@@ -15,9 +16,9 @@ const store = createStore(
     userNameState: userNameReducer,
     sortState: sortReducer,
     dueDateState: filterDueDateReducer,
+    searchTextState: filterSearchTextReducer,
   })
 );
 
-//export type DispatchType = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export { store };

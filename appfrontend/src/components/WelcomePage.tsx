@@ -9,9 +9,10 @@ const WelcomePage = () => {
   return (
     <>
       <Segment inverted textAlign="center" style={{ height: "100vh", padding: "1em 0em" }} vertical>
-        <Container></Container>
         <Container text style={{ marginTop: "12em" }}>
-          <WelcomePageWord />
+          <div style={{ marginRight: "5vh" }}>
+            <WelcomePageWord />
+          </div>
           {/* Old Header, without any kind of animation. 
           <p style={{ color: "white", fontSize: "85px", fontWeight: "bold", marginBottom: 0, marginTop: "3em" }}>
             To Do Application
@@ -28,25 +29,27 @@ const WelcomePage = () => {
             }}
           />
           */}
-          <Header
-            as="h2"
-            content="Do whatever you want when you want to."
-            inverted
-            style={{
-              fontSize: "1.7em",
-              fontWeight: "normal",
-              marginTop: "1.5em",
-            }}
-          />
-          <Button.Group style={{ marginRight: "25vh" }}>
-            <Button color="green" size="large" onClick={() => history.push("/login")}>
-              Login
-            </Button>
-            <Button.Or text="/" />
-            <Button color="teal" size="large" onClick={() => history.push("/register")}>
-              Register
-            </Button>
-          </Button.Group>
+          <div style={{ marginLeft: "10.5vh", position: "fixed" }}>
+            <Header
+              as="h2"
+              content="Do whatever you want when you want to."
+              inverted
+              style={{
+                fontSize: "1.7em",
+                fontWeight: "normal",
+                marginTop: "1.5em",
+              }}
+            />
+            <Button.Group style={{ marginRight: "25vh" }}>
+              <Button color="green" size="large" onClick={() => history.push("/login")}>
+                Login
+              </Button>
+              <Button.Or text="/" />
+              <Button color="teal" size="large" onClick={() => history.push("/register")}>
+                Register
+              </Button>
+            </Button.Group>
+          </div>
         </Container>
       </Segment>
     </>
